@@ -144,6 +144,27 @@ client.on(discord_js_1.Events.InteractionCreate, async (interaction) => {
                 console.error("Erro ao registrar log de comando:", error);
             });
         }
+        // Auto-delete: apaga a resposta do comando após 4 segundos
+        // Ignora respostas efêmeras (só visíveis para o usuário — não podem ser deletadas pelo bot)
+        if (interaction.inGuild() && (interaction.replied || interaction.deferred)) {
+            try {
+                const reply = await interaction.fetchReply();
+                const isEphemeral = reply.flags.has(discord_js_1.MessageFlags.Ephemeral);
+                console.log(`[auto-delete] /${interaction.commandName} | replied=${interaction.replied} deferred=${interaction.deferred} ephemeral=${isEphemeral} messageId=${reply.id}`);
+                if (!isEphemeral) {
+                    setTimeout(() => {
+                        reply.delete().then(() => {
+                            console.log(`[auto-delete] /${interaction.commandName} deletado com sucesso`);
+                        }).catch((err) => {
+                            console.error(`[auto-delete] erro ao deletar /${interaction.commandName}:`, err);
+                        });
+                    }, 4000);
+                }
+            }
+            catch (err) {
+                console.error(`[auto-delete] erro ao buscar reply de /${interaction.commandName}:`, err);
+            }
+        }
     }
     catch (error) {
         if (isInteractionExpired(error)) {
