@@ -184,15 +184,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
       try {
         const reply = await interaction.fetchReply();
         const isEphemeral = reply.flags.has(MessageFlags.Ephemeral);
+        console.log(`[auto-delete] /${interaction.commandName} | replied=${interaction.replied} deferred=${interaction.deferred} ephemeral=${isEphemeral} messageId=${reply.id}`);
         if (!isEphemeral) {
           setTimeout(() => {
-            reply.delete().catch(() => {
-              // Ignora erros (mensagem já deletada, interação expirada, etc.)
+            reply.delete().then(() => {
+              console.log(`[auto-delete] /${interaction.commandName} deletado com sucesso`);
+            }).catch((err) => {
+              console.error(`[auto-delete] erro ao deletar /${interaction.commandName}:`, err);
             });
           }, 4000);
         }
-      } catch {
-        // Ignora erros ao buscar a resposta
+      } catch (err) {
+        console.error(`[auto-delete] erro ao buscar reply de /${interaction.commandName}:`, err);
       }
     }
   } catch (error) {
