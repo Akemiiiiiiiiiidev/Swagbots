@@ -186,7 +186,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const isEphemeral = reply.flags.has(MessageFlags.Ephemeral);
         if (!isEphemeral) {
           setTimeout(() => {
-            interaction.deleteReply().catch(() => {
+            reply.delete().catch(() => {
               // Ignora erros (mensagem já deletada, interação expirada, etc.)
             });
           }, 4000);
