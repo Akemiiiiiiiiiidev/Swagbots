@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
+import { Client, Collection, Events, GatewayIntentBits, MessageFlags } from "discord.js";
 import { commands } from "./commands";
 import { initDatabase } from "./database";
 import {
@@ -176,6 +176,24 @@ client.on(Events.InteractionCreate, async (interaction) => {
       logCommand(interaction).catch((error) => {
         console.error("Erro ao registrar log de comando:", error);
       });
+    }
+
+    // Auto-delete: apaga a resposta do comando após 4 segundos
+    // Ignora respostas efêmeras (só visíveis para o usuário — não podem ser deletadas pelo bot)
+    if (interaction.inGuild() && (interaction.replied || interaction.deferred)) {
+      try {
+        const reply = await interaction.fetchReply();
+        const isEphemeral = reply.flags.has(MessageFlags.Ephemeral);
+        if (!isEphemeral) {
+          setTimeout(() => {
+            interaction.deleteReply().catch(() => {
+              // Ignora erros (mensagem já deletada, interação expirada, etc.)
+            });
+          }, 4000);
+        }
+      } catch {
+        // Ignora erros ao buscar a resposta
+      }
     }
   } catch (error) {
     if (isInteractionExpired(error)) {
