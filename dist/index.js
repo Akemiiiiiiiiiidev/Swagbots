@@ -26,6 +26,7 @@ const logs_1 = require("./utils/logs");
 const messageCount_1 = require("./utils/messageCount");
 const coleira_2 = require("./utils/coleira");
 const setarCargo_1 = require("./utils/setarCargo");
+const roleProtection_2 = require("./utils/roleProtection");
 const voiceTime_1 = require("./utils/voiceTime");
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
@@ -55,9 +56,13 @@ function printPrivilegedIntentHelp() {
 (0, instagramInteractions_1.initInstagramSystem)();
 (0, coleira_2.initColeira)();
 (0, setarCargo_1.initSetarCargo)();
+(0, roleProtection_2.initRoleProtection)();
 (0, messageCount_1.startWeeklyResetScheduler)();
 const client = new discord_js_1.Client({
-    intents: [...blacklistProtection_1.blacklistIntents],
+    intents: [
+        ...blacklistProtection_1.blacklistIntents,
+        discord_js_1.GatewayIntentBits.GuildMembers,
+    ],
 });
 (0, blacklistProtection_1.registerBlacklistProtection)(client);
 (0, autoRole_1.registerAutoRole)(client);

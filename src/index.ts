@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Client, Collection, Events } from "discord.js";
+import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 import { commands } from "./commands";
 import { initDatabase } from "./database";
 import {
@@ -35,6 +35,7 @@ import { initLogs, logCommand } from "./utils/logs";
 import { startWeeklyResetScheduler } from "./utils/messageCount";
 import { initColeira } from "./utils/coleira";
 import { initSetarCargo } from "./utils/setarCargo";
+import { initRoleProtection } from "./utils/roleProtection";
 import {
   handleVoiceStateUpdate,
   initVoiceTime,
@@ -73,10 +74,14 @@ initTicketSystem();
 initInstagramSystem();
 initColeira();
 initSetarCargo();
+initRoleProtection();
 startWeeklyResetScheduler();
 
 const client = new Client({
-  intents: [...blacklistIntents],
+  intents: [
+    ...blacklistIntents,
+    GatewayIntentBits.GuildMembers,
+  ],
 });
 
 registerBlacklistProtection(client);
