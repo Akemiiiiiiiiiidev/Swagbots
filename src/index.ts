@@ -36,6 +36,7 @@ import { startWeeklyResetScheduler } from "./utils/messageCount";
 import { initColeira } from "./utils/coleira";
 import { initSetarCargo } from "./utils/setarCargo";
 import { initRoleProtection } from "./utils/roleProtection";
+import { initPd } from "./utils/pd";
 import {
   handleVoiceStateUpdate,
   initVoiceTime,
@@ -75,6 +76,7 @@ initInstagramSystem();
 initColeira();
 initSetarCargo();
 initRoleProtection();
+initPd();
 startWeeklyResetScheduler();
 
 const client = new Client({

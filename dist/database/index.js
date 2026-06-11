@@ -64,6 +64,17 @@ function runMigrations(database) {
       executor_id TEXT NOT NULL,
       PRIMARY KEY (guild_id, target_id)
     );
+
+    CREATE TABLE IF NOT EXISTS pd_config (
+      guild_id TEXT PRIMARY KEY,
+      role_id  TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS pd_allowed_users (
+      guild_id TEXT NOT NULL,
+      user_id  TEXT NOT NULL,
+      PRIMARY KEY (guild_id, user_id)
+    );
   `);
 }
 function initDatabase() {
