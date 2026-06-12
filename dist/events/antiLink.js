@@ -13,11 +13,11 @@ function registerAntiLink(client) {
             return;
         if (!(0, protection_1.isProtectionEnabled)(message.guild.id, "anti_link"))
             return;
-        // Admins podem mandar links
+        // Apenas o dono do servidor pode mandar links
         const member = message.member;
         if (!member)
             return;
-        if (member.permissions.has(discord_js_1.PermissionFlagsBits.Administrator))
+        if (member.id === message.guild.ownerId)
             return;
         if (!LINK_REGEX.test(message.content))
             return;

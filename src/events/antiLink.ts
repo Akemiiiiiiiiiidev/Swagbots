@@ -1,4 +1,4 @@
-import { Client, Events, PermissionFlagsBits, TextChannel } from "discord.js";
+import { Client, Events } from "discord.js";
 import { isProtectionEnabled } from "../utils/protection";
 
 // Detecta URLs: http(s)://, www., discord.gg/, .com/.net/.org etc
@@ -12,10 +12,10 @@ export function registerAntiLink(client: Client) {
 
     if (!isProtectionEnabled(message.guild.id, "anti_link")) return;
 
-    // Admins podem mandar links
+    // Apenas o dono do servidor pode mandar links
     const member = message.member;
     if (!member) return;
-    if (member.permissions.has(PermissionFlagsBits.Administrator)) return;
+    if (member.id === message.guild.ownerId) return;
 
     if (!LINK_REGEX.test(message.content)) return;
 

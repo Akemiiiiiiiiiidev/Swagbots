@@ -1,1 +1,1 @@
-{"version":3,"file":"antiLink.d.ts","sourceRoot":"","sources":["../../src/events/antiLink.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAA4C,MAAM,YAAY,CAAC;AAO9E,wBAAgB,gBAAgB,CAAC,MAAM,EAAE,MAAM,QAuB9C"}
+{"version":3,"file":"antiLink.d.ts","sourceRoot":"","sources":["../../src/events/antiLink.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAU,MAAM,YAAY,CAAC;AAO5C,wBAAgB,gBAAgB,CAAC,MAAM,EAAE,MAAM,QAuB9C"}
