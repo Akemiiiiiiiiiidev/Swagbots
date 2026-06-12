@@ -6,6 +6,7 @@ const autorole_1 = require("./autorole");
 const ban_1 = require("./ban");
 const blacklist_1 = require("./blacklist");
 const cargo_1 = require("./cargo");
+const cargoall_1 = require("./cargoall");
 const cl_1 = require("./cl");
 const coleira_1 = require("./coleira");
 const deletartudo_1 = require("./deletartudo");
@@ -47,6 +48,7 @@ exports.commands = [
     ticket_1.ticket,
     logs_1.logs,
     cargo_1.cargo,
+    cargoall_1.cargoall,
     coleira_1.coleira,
     setarcargo_1.setarcargo,
     protecao_1.protecao,

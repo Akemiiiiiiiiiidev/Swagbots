@@ -4,6 +4,7 @@ import { autorole } from "./autorole";
 import { ban } from "./ban";
 import { blacklist } from "./blacklist";
 import { cargo } from "./cargo";
+import { cargoall } from "./cargoall";
 import { cl } from "./cl";
 import { coleira } from "./coleira";
 import { deletartudo } from "./deletartudo";
@@ -46,6 +47,7 @@ export const commands: Command[] = [
   ticket,
   logs,
   cargo,
+  cargoall,
   coleira,
   setarcargo,
   protecao,
