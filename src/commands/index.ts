@@ -14,6 +14,7 @@ import { logs } from "./logs";
 import { mensagens } from "./mensagens";
 import { mute } from "./mute";
 import { pd } from "./pd";
+import { protecao } from "./protecao";
 import { ping } from "./ping";
 import { server } from "./server";
 import { tempcall } from "./tempcall";
@@ -47,6 +48,7 @@ export const commands: Command[] = [
   cargo,
   coleira,
   setarcargo,
+  protecao,
   pd,
   instagram,
 ];

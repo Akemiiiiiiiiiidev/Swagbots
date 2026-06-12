@@ -216,9 +216,12 @@ async function handleChannelOverwriteUpdate(
   await punishExecutor(guild, entry.executor.id);
 }
 
+import { isProtectionEnabled } from "../utils/protection";
+
 // ── Registro ──────────────────────────────────────────────────────────────────
 export function registerChannelProtection(client: Client) {
   client.on(Events.GuildAuditLogEntryCreate, async (entry, guild) => {
+    if (!isProtectionEnabled(guild.id, "channel_protection")) return;
     try {
       switch (entry.action) {
         case AuditLogEvent.ChannelDelete:

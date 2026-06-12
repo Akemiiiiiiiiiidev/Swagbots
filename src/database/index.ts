@@ -80,6 +80,13 @@ function runMigrations(database: SqliteDatabase) {
       granted_at  INTEGER NOT NULL DEFAULT 0,
       PRIMARY KEY (guild_id, user_id)
     );
+
+    CREATE TABLE IF NOT EXISTS protection_config (
+      guild_id TEXT NOT NULL,
+      system   TEXT NOT NULL,
+      enabled  INTEGER NOT NULL DEFAULT 1,
+      PRIMARY KEY (guild_id, system)
+    );
   `);
 }
 

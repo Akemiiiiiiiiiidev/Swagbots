@@ -44,6 +44,7 @@ import { initColeira } from "./utils/coleira";
 import { initSetarCargo } from "./utils/setarCargo";
 import { initRoleProtection } from "./utils/roleProtection";
 import { initPd } from "./utils/pd";
+import { initProtection } from "./utils/protection";
 import {
   handleVoiceStateUpdate,
   initVoiceTime,
@@ -84,6 +85,7 @@ initColeira();
 initSetarCargo();
 initRoleProtection();
 initPd();
+initProtection();
 startWeeklyResetScheduler();
 
 const client = new Client({
