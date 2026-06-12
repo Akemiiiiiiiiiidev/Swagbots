@@ -54,16 +54,11 @@ export const botIntents = [
   GatewayIntentBits.GuildVoiceStates,
   GatewayIntentBits.GuildModeration,
   GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.MessageContent,
 ] as const;
 
 export function getBotIntents() {
-  const intents: GatewayIntentBits[] = [...botIntents];
-
-  if (process.env.MESSAGE_CONTENT_INTENT === "true") {
-    intents.push(GatewayIntentBits.MessageContent);
-  }
-
-  return intents;
+  return [...botIntents];
 }
 
 export const blacklistIntents = getBotIntents();

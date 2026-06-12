@@ -46,13 +46,10 @@ exports.botIntents = [
     discord_js_1.GatewayIntentBits.GuildVoiceStates,
     discord_js_1.GatewayIntentBits.GuildModeration,
     discord_js_1.GatewayIntentBits.GuildMessages,
+    discord_js_1.GatewayIntentBits.MessageContent,
 ];
 function getBotIntents() {
-    const intents = [...exports.botIntents];
-    if (process.env.MESSAGE_CONTENT_INTENT === "true") {
-        intents.push(discord_js_1.GatewayIntentBits.MessageContent);
-    }
-    return intents;
+    return [...exports.botIntents];
 }
 exports.blacklistIntents = getBotIntents();
 async function isExecutorAdministrator(guild, userId) {
