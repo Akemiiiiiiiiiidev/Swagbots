@@ -72,8 +72,8 @@ export function buildPdAdminPanel(guildId: string) {
     new ActionRowBuilder<ButtonBuilder>().addComponents(
       new ButtonBuilder().setCustomId(PD_BTN_SETUP_CARGO).setLabel("⚙️ Cargo PD").setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId(PD_BTN_SETUP_ACESSO).setLabel("🔑 Cargos de acesso").setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder().setCustomId(PD_BTN_SETAR).setLabel("✅ Setar PD").setStyle(ButtonStyle.Success),
-      new ButtonBuilder().setCustomId(PD_BTN_REMOVER).setLabel("❌ Remover PD").setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setCustomId(PD_BTN_SETAR).setLabel("Setar PD").setEmoji("1514793590394585108").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId(PD_BTN_REMOVER).setLabel("Remover PD").setEmoji("1514793575248953386").setStyle(ButtonStyle.Secondary),
     )
   );
 }
@@ -97,8 +97,8 @@ export function buildPdUserPanel(guildId: string, executorId: string) {
     `${E} Voce pode setar o cargo em ate **${PD_MAX_PER_EXECUTOR}** pessoas.`,
   ]).addActionRowComponents(
     new ActionRowBuilder<ButtonBuilder>().addComponents(
-      new ButtonBuilder().setCustomId(PD_BTN_SETAR).setLabel("✅ Setar PD").setStyle(ButtonStyle.Success),
-      new ButtonBuilder().setCustomId(PD_BTN_REMOVER).setLabel("❌ Remover PD").setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setCustomId(PD_BTN_SETAR).setLabel("Setar PD").setEmoji("1514793590394585108").setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId(PD_BTN_REMOVER).setLabel("Remover PD").setEmoji("1514793575248953386").setStyle(ButtonStyle.Secondary),
     )
   );
 }

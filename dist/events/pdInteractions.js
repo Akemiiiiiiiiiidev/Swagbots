@@ -41,7 +41,7 @@ function buildPdAdminPanel(guildId) {
             `${container_1.E} **Cargos com acesso (${allowed.length}):** ${allowed.length > 0 ? allowed.map((id) => `<@&${id}>`).join(", ") : "Nenhum"}`,
         ].join("\n"),
         [`${container_1.E} **PDs ativas (${holders.length}):**`, holdersText].join("\n"),
-    ]).addActionRowComponents(new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETUP_CARGO).setLabel("⚙️ Cargo PD").setStyle(discord_js_1.ButtonStyle.Secondary), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETUP_ACESSO).setLabel("🔑 Cargos de acesso").setStyle(discord_js_1.ButtonStyle.Secondary), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETAR).setLabel("✅ Setar PD").setStyle(discord_js_1.ButtonStyle.Success), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_REMOVER).setLabel("❌ Remover PD").setStyle(discord_js_1.ButtonStyle.Danger)));
+    ]).addActionRowComponents(new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETUP_CARGO).setLabel("⚙️ Cargo PD").setStyle(discord_js_1.ButtonStyle.Secondary), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETUP_ACESSO).setLabel("🔑 Cargos de acesso").setStyle(discord_js_1.ButtonStyle.Secondary), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETAR).setLabel("Setar PD").setEmoji("1514793590394585108").setStyle(discord_js_1.ButtonStyle.Secondary), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_REMOVER).setLabel("Remover PD").setEmoji("1514793575248953386").setStyle(discord_js_1.ButtonStyle.Secondary)));
 }
 // ── Painel para usuários com acesso (2 botões) ────────────────────────────────
 function buildPdUserPanel(guildId, executorId) {
@@ -57,7 +57,7 @@ function buildPdUserPanel(guildId, executorId) {
             holdersText,
         ].join("\n"),
         `${container_1.E} Voce pode setar o cargo em ate **${pd_1.PD_MAX_PER_EXECUTOR}** pessoas.`,
-    ]).addActionRowComponents(new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETAR).setLabel("✅ Setar PD").setStyle(discord_js_1.ButtonStyle.Success), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_REMOVER).setLabel("❌ Remover PD").setStyle(discord_js_1.ButtonStyle.Danger)));
+    ]).addActionRowComponents(new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_SETAR).setLabel("Setar PD").setEmoji("1514793590394585108").setStyle(discord_js_1.ButtonStyle.Secondary), new discord_js_1.ButtonBuilder().setCustomId(exports.PD_BTN_REMOVER).setLabel("Remover PD").setEmoji("1514793575248953386").setStyle(discord_js_1.ButtonStyle.Secondary)));
 }
 // ── Handler de botões ─────────────────────────────────────────────────────────
 async function handlePdButton(interaction) {
