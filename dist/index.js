@@ -31,6 +31,7 @@ const coleira_2 = require("./utils/coleira");
 const setarCargo_1 = require("./utils/setarCargo");
 const roleProtection_2 = require("./utils/roleProtection");
 const pd_1 = require("./utils/pd");
+const protection_1 = require("./utils/protection");
 const voiceTime_1 = require("./utils/voiceTime");
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
@@ -62,6 +63,7 @@ function printPrivilegedIntentHelp() {
 (0, setarCargo_1.initSetarCargo)();
 (0, roleProtection_2.initRoleProtection)();
 (0, pd_1.initPd)();
+(0, protection_1.initProtection)();
 (0, messageCount_1.startWeeklyResetScheduler)();
 const client = new discord_js_1.Client({
     intents: [

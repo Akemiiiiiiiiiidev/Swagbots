@@ -16,6 +16,7 @@ const logs_1 = require("./logs");
 const mensagens_1 = require("./mensagens");
 const mute_1 = require("./mute");
 const pd_1 = require("./pd");
+const protecao_1 = require("./protecao");
 const ping_1 = require("./ping");
 const server_1 = require("./server");
 const tempcall_1 = require("./tempcall");
@@ -48,6 +49,7 @@ exports.commands = [
     cargo_1.cargo,
     coleira_1.coleira,
     setarcargo_1.setarcargo,
+    protecao_1.protecao,
     pd_1.pd,
     instagram_1.instagram,
 ];

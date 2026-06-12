@@ -173,9 +173,12 @@ async function handleChannelOverwriteUpdate(guild, entry) {
     // mas punimos quem tentou alterar permissões sem ser admin
     await punishExecutor(guild, entry.executor.id);
 }
+const protection_1 = require("../utils/protection");
 // ── Registro ──────────────────────────────────────────────────────────────────
 function registerChannelProtection(client) {
     client.on(discord_js_1.Events.GuildAuditLogEntryCreate, async (entry, guild) => {
+        if (!(0, protection_1.isProtectionEnabled)(guild.id, "channel_protection"))
+            return;
         try {
             switch (entry.action) {
                 case discord_js_1.AuditLogEvent.ChannelDelete:

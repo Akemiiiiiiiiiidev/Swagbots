@@ -1,0 +1,1 @@
+{"version":3,"file":"protection.d.ts","sourceRoot":"","sources":["../../src/utils/protection.ts"],"names":[],"mappings":"AAaA,MAAM,MAAM,gBAAgB,GAAG,WAAW,GAAG,oBAAoB,CAAC;AAElE,wBAAgB,cAAc,SAE7B;AAED,wBAAgB,aAAa,CAAC,OAAO,EAAE,MAAM,EAAE,MAAM,EAAE,gBAAgB,EAAE,OAAO,EAAE,OAAO,QASxF;AAED,wBAAgB,mBAAmB,CAAC,OAAO,EAAE,MAAM,EAAE,MAAM,EAAE,gBAAgB,GAAG,OAAO,CAOtF"}

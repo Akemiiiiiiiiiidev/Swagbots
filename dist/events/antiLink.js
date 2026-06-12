@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerAntiLink = registerAntiLink;
 const discord_js_1 = require("discord.js");
+const protection_1 = require("../utils/protection");
 // Detecta URLs: http(s)://, www., discord.gg/, .com/.net/.org etc
 const LINK_REGEX = /https?:\/\/\S+|www\.\S+|discord\.gg\/\S+|\S+\.(com|net|org|io|gg|tv|me|app|dev|xyz|club|link|site|online|store|shop|info|co)(\/\S*)?/gi;
 function registerAntiLink(client) {
@@ -9,6 +10,8 @@ function registerAntiLink(client) {
         if (!message.guild)
             return;
         if (message.author.bot)
+            return;
+        if (!(0, protection_1.isProtectionEnabled)(message.guild.id, "anti_link"))
             return;
         // Admins podem mandar links
         const member = message.member;
