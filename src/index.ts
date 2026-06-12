@@ -31,6 +31,8 @@ import { registerGuildSetup } from "./events/guildSetup";
 import { registerRoleProtection } from "./events/roleProtection";
 import { registerColeiraVoice } from "./events/coleira";
 import { registerSetarCargoProtection } from "./events/setarCargoProtection";
+import { registerAntiLink } from "./events/antiLink";
+import { registerChannelProtection } from "./events/channelProtection";
 import type { Command } from "./types";
 import { containerEdit, containerReply } from "./utils/container";
 import { initAutoRole } from "./utils/autoRole";
@@ -102,6 +104,8 @@ registerGuildSetup(client);
 registerRoleProtection(client);
 registerColeiraVoice(client);
 registerSetarCargoProtection(client);
+registerAntiLink(client);
+registerChannelProtection(client);
 
 const commandMap = new Collection<string, Command>();
 

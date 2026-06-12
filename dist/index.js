@@ -19,6 +19,8 @@ const guildSetup_1 = require("./events/guildSetup");
 const roleProtection_1 = require("./events/roleProtection");
 const coleira_1 = require("./events/coleira");
 const setarCargoProtection_1 = require("./events/setarCargoProtection");
+const antiLink_1 = require("./events/antiLink");
+const channelProtection_1 = require("./events/channelProtection");
 const container_1 = require("./utils/container");
 const autoRole_2 = require("./utils/autoRole");
 const antiban_1 = require("./utils/antiban");
@@ -78,6 +80,8 @@ const client = new discord_js_1.Client({
 (0, roleProtection_1.registerRoleProtection)(client);
 (0, coleira_1.registerColeiraVoice)(client);
 (0, setarCargoProtection_1.registerSetarCargoProtection)(client);
+(0, antiLink_1.registerAntiLink)(client);
+(0, channelProtection_1.registerChannelProtection)(client);
 const commandMap = new discord_js_1.Collection();
 for (const command of commands_1.commands) {
     commandMap.set(command.data.name, command);
