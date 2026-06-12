@@ -6,6 +6,7 @@ import { memberHasPdAccess, initPd } from "../utils/pd";
 import { buildPdAdminPanel, buildPdUserPanel } from "../events/pdInteractions";
 
 export const pd: Command = {
+  noAutoDelete: true,
   data: new SlashCommandBuilder()
     .setName("pd")
     .setDescription("Sistema de Primeira Dama")
@@ -48,6 +49,10 @@ export const pd: Command = {
         components: [buildPdAdminPanel(guild.id)],
         flags: MessageFlags.IsComponentsV2,
       });
+
+      // Deleta o painel após 5 minutos de inatividade
+      const reply = await interaction.fetchReply();
+      setTimeout(() => reply.delete().catch(() => null), 5 * 60 * 1000);
       return;
     }
 
@@ -67,6 +72,10 @@ export const pd: Command = {
         components: [buildPdUserPanel(guild.id, interaction.user.id)],
         flags: MessageFlags.IsComponentsV2,
       });
+
+      // Deleta o painel após 5 minutos de inatividade
+      const reply = await interaction.fetchReply();
+      setTimeout(() => reply.delete().catch(() => null), 5 * 60 * 1000);
       return;
     }
   },

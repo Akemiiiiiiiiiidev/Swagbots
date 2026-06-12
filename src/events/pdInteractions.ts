@@ -307,6 +307,10 @@ export async function handlePdRoleSelect(
       flags: MessageFlags.IsComponentsV2,
     });
 
+    // Deleta o painel de confirmação após 8 segundos
+    const msg = await interaction.fetchReply().catch(() => null);
+    if (msg) setTimeout(() => msg.delete().catch(() => null), 8000);
+
     await sendLog(guild, "cargo", [
       [
         `${V} **PD — Cargo configurado**`,
@@ -338,6 +342,10 @@ export async function handlePdRoleSelect(
       ],
       flags: MessageFlags.IsComponentsV2,
     });
+
+    // Deleta o painel de confirmação após 8 segundos
+    const msg = await interaction.fetchReply().catch(() => null);
+    if (msg) setTimeout(() => msg.delete().catch(() => null), 8000);
 
     await sendLog(guild, "cargo", [
       [
@@ -468,6 +476,15 @@ export async function handlePdModal(
       ])
     );
 
+    // Deleta a resposta de confirmação após 8 segundos
+    const confirmMsg = await interaction.fetchReply().catch(() => null);
+    if (confirmMsg) setTimeout(() => confirmMsg.delete().catch(() => null), 8000);
+
+    // Deleta o painel original (mensagem do botão) também após 8 segundos
+    if (interaction.message) {
+      setTimeout(() => interaction.message?.delete().catch(() => null), 8000);
+    }
+
     await sendLog(guild, "cargo", [
       [
         `${V} **PD setado**`,
@@ -518,6 +535,15 @@ export async function handlePdModal(
         ].join("\n"),
       ])
     );
+
+    // Deleta a resposta de confirmação após 8 segundos
+    const confirmMsg = await interaction.fetchReply().catch(() => null);
+    if (confirmMsg) setTimeout(() => confirmMsg.delete().catch(() => null), 8000);
+
+    // Deleta o painel original (mensagem do botão) também após 8 segundos
+    if (interaction.message) {
+      setTimeout(() => interaction.message?.delete().catch(() => null), 8000);
+    }
 
     await sendLog(guild, "cargo", [
       [

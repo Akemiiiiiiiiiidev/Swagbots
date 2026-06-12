@@ -13,4 +13,5 @@ export interface Command {
     | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>;
   defer?: boolean;
+  noAutoDelete?: boolean;
 }

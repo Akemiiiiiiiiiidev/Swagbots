@@ -201,6 +201,10 @@ async function handlePdRoleSelect(interaction) {
             ],
             flags: discord_js_1.MessageFlags.IsComponentsV2,
         });
+        // Deleta o painel de confirmação após 8 segundos
+        const msg = await interaction.fetchReply().catch(() => null);
+        if (msg)
+            setTimeout(() => msg.delete().catch(() => null), 8000);
         await (0, logs_1.sendLog)(guild, "cargo", [
             [
                 `${container_1.V} **PD — Cargo configurado**`,
@@ -230,6 +234,10 @@ async function handlePdRoleSelect(interaction) {
             ],
             flags: discord_js_1.MessageFlags.IsComponentsV2,
         });
+        // Deleta o painel de confirmação após 8 segundos
+        const msg = await interaction.fetchReply().catch(() => null);
+        if (msg)
+            setTimeout(() => msg.delete().catch(() => null), 8000);
         await (0, logs_1.sendLog)(guild, "cargo", [
             [
                 `${container_1.V} **PD — Cargos de acesso atualizados**`,
@@ -317,6 +325,14 @@ async function handlePdModal(interaction) {
                 `${container_1.E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
             ].join("\n"),
         ]));
+        // Deleta a resposta de confirmação após 8 segundos
+        const confirmMsg = await interaction.fetchReply().catch(() => null);
+        if (confirmMsg)
+            setTimeout(() => confirmMsg.delete().catch(() => null), 8000);
+        // Deleta o painel original (mensagem do botão) também após 8 segundos
+        if (interaction.message) {
+            setTimeout(() => interaction.message?.delete().catch(() => null), 8000);
+        }
         await (0, logs_1.sendLog)(guild, "cargo", [
             [
                 `${container_1.V} **PD setado**`,
@@ -354,6 +370,14 @@ async function handlePdModal(interaction) {
                 `${container_1.E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
             ].join("\n"),
         ]));
+        // Deleta a resposta de confirmação após 8 segundos
+        const confirmMsg = await interaction.fetchReply().catch(() => null);
+        if (confirmMsg)
+            setTimeout(() => confirmMsg.delete().catch(() => null), 8000);
+        // Deleta o painel original (mensagem do botão) também após 8 segundos
+        if (interaction.message) {
+            setTimeout(() => interaction.message?.delete().catch(() => null), 8000);
+        }
         await (0, logs_1.sendLog)(guild, "cargo", [
             [
                 `${container_1.V} **PD removido**`,

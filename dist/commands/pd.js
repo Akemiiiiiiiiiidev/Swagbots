@@ -7,6 +7,7 @@ const moderation_1 = require("../utils/moderation");
 const pd_1 = require("../utils/pd");
 const pdInteractions_1 = require("../events/pdInteractions");
 exports.pd = {
+    noAutoDelete: true,
     data: new discord_js_1.SlashCommandBuilder()
         .setName("pd")
         .setDescription("Sistema de Primeira Dama")
@@ -36,6 +37,9 @@ exports.pd = {
                 components: [(0, pdInteractions_1.buildPdAdminPanel)(guild.id)],
                 flags: discord_js_1.MessageFlags.IsComponentsV2,
             });
+            // Deleta o painel após 5 minutos de inatividade
+            const reply = await interaction.fetchReply();
+            setTimeout(() => reply.delete().catch(() => null), 5 * 60 * 1000);
             return;
         }
         // ── /pd painel — cargos com acesso ou admins ──────────────────────────────
@@ -50,6 +54,9 @@ exports.pd = {
                 components: [(0, pdInteractions_1.buildPdUserPanel)(guild.id, interaction.user.id)],
                 flags: discord_js_1.MessageFlags.IsComponentsV2,
             });
+            // Deleta o painel após 5 minutos de inatividade
+            const reply = await interaction.fetchReply();
+            setTimeout(() => reply.delete().catch(() => null), 5 * 60 * 1000);
             return;
         }
     },
