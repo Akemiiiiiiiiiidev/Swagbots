@@ -13,7 +13,6 @@ import { lock } from "./lock";
 import { logs } from "./logs";
 import { mensagens } from "./mensagens";
 import { mute } from "./mute";
-import { pd } from "./pd";
 import { ping } from "./ping";
 import { server } from "./server";
 import { tempcall } from "./tempcall";
@@ -47,6 +46,5 @@ export const commands: Command[] = [
   cargo,
   coleira,
   setarcargo,
-  pd,
   instagram,
 ];
