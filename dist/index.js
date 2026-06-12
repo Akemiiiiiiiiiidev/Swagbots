@@ -14,6 +14,7 @@ const ticketMessageCache_1 = require("./events/ticketMessageCache");
 const welcome_1 = require("./events/welcome");
 const voiceLogs_1 = require("./events/voiceLogs");
 const ticketInteractions_1 = require("./events/ticketInteractions");
+const pdInteractions_1 = require("./events/pdInteractions");
 const guildSetup_1 = require("./events/guildSetup");
 const roleProtection_1 = require("./events/roleProtection");
 const coleira_1 = require("./events/coleira");
@@ -102,6 +103,9 @@ client.on(discord_js_1.Events.VoiceStateUpdate, (oldState, newState) => {
 client.on(discord_js_1.Events.InteractionCreate, async (interaction) => {
     if (interaction.isButton()) {
         try {
+            const pdHandled = await (0, pdInteractions_1.handlePdButton)(interaction);
+            if (pdHandled)
+                return;
             const instagramHandled = await (0, instagramInteractions_1.handleInstagramButton)(interaction);
             if (instagramHandled)
                 return;
@@ -114,8 +118,22 @@ client.on(discord_js_1.Events.InteractionCreate, async (interaction) => {
         }
         return;
     }
+    if (interaction.isRoleSelectMenu()) {
+        try {
+            const pdHandled = await (0, pdInteractions_1.handlePdRoleSelect)(interaction);
+            if (pdHandled)
+                return;
+        }
+        catch (error) {
+            console.error("Erro ao processar role select:", error);
+        }
+        return;
+    }
     if (interaction.isModalSubmit()) {
         try {
+            const pdHandled = await (0, pdInteractions_1.handlePdModal)(interaction);
+            if (pdHandled)
+                return;
             const handled = await (0, instagramInteractions_1.handleInstagramModal)(interaction);
             if (handled)
                 return;

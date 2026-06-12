@@ -67,9 +67,17 @@ function runMigrations(database: SqliteDatabase) {
       role_id  TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS pd_allowed_users (
+    CREATE TABLE IF NOT EXISTS pd_allowed_roles (
       guild_id TEXT NOT NULL,
-      user_id  TEXT NOT NULL,
+      role_id  TEXT NOT NULL,
+      PRIMARY KEY (guild_id, role_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS pd_holders (
+      guild_id    TEXT NOT NULL,
+      user_id     TEXT NOT NULL,
+      granted_by  TEXT NOT NULL,
+      granted_at  INTEGER NOT NULL DEFAULT 0,
       PRIMARY KEY (guild_id, user_id)
     );
   `);

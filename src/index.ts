@@ -22,6 +22,11 @@ import {
   handleTicketButton,
   initTicketSystem,
 } from "./events/ticketInteractions";
+import {
+  handlePdButton,
+  handlePdModal,
+  handlePdRoleSelect,
+} from "./events/pdInteractions";
 import { registerGuildSetup } from "./events/guildSetup";
 import { registerRoleProtection } from "./events/roleProtection";
 import { registerColeiraVoice } from "./events/coleira";
@@ -131,6 +136,9 @@ client.on(Events.VoiceStateUpdate, (oldState, newState) => {
 client.on(Events.InteractionCreate, async (interaction) => {
   if (interaction.isButton()) {
     try {
+      const pdHandled = await handlePdButton(interaction);
+      if (pdHandled) return;
+
       const instagramHandled = await handleInstagramButton(interaction);
       if (instagramHandled) return;
 
@@ -142,8 +150,21 @@ client.on(Events.InteractionCreate, async (interaction) => {
     return;
   }
 
+  if (interaction.isRoleSelectMenu()) {
+    try {
+      const pdHandled = await handlePdRoleSelect(interaction);
+      if (pdHandled) return;
+    } catch (error) {
+      console.error("Erro ao processar role select:", error);
+    }
+    return;
+  }
+
   if (interaction.isModalSubmit()) {
     try {
+      const pdHandled = await handlePdModal(interaction);
+      if (pdHandled) return;
+
       const handled = await handleInstagramModal(interaction);
       if (handled) return;
     } catch (error) {
