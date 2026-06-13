@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { containerReplyOrganized, E, V } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
@@ -74,7 +74,7 @@ export const antiban: Command = {
           [
             `${V} **Cargo configurado**`,
             `${E} **Cargo:** <@&${roleId}>`,
-            `${E} <:xxx:1514705761413107732> Membros com este cargo nao podem ser banidos pelo bot.`,
+            `${E} membros <:xxx:1514705761413107732> com este cargo nao podem ser banidos pelo bot.`,
           ].join("\n"),
         ])
       );
@@ -105,7 +105,7 @@ export const antiban: Command = {
             `${E} **Cargo:** <@&${role.id}>`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} <:xxx:1514705761413107732> Membros com este cargo nao poderao ser banidos pelo bot.`,
+          `${E} membros <:xxx:1514705761413107732> com este cargo nao poderao ser banidos pelo bot.`,
         ])
       );
       return;

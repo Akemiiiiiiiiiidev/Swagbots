@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { containerReply, E, V } from "../utils/container";
 
@@ -17,7 +17,7 @@ export const server: Command = {
           `${V} **Servidor:** ${guild.name}`,
           `${E} **ID:** ${guild.id}`,
           `${E} **Dono:** <@${guild.ownerId}>`,
-          `${E} **<:xxx:1514705761413107732> Membros:** ${guild.memberCount}`,
+          `${E} **membros <:xxx:1514705761413107732>:** ${guild.memberCount}`,
           `${E} **Criado em:** <t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
         ].join("\n")
       )

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { containerEditOrganized, E, U } from "../utils/container";
 import {
@@ -32,7 +32,7 @@ function buildMensagensSections(guildId: string, targetUserId: string) {
   return [
     "# **MENSAGENS**",
     [
-      `${U} **<:xxx:1514705761413107732> Usuario:** <@${targetUserId}>`,
+      `${U} **Usuario <:xxx:1514705761413107732>:** <@${targetUserId}>`,
       `${E} **Mensagens esta semana:** ${count}`,
       `${E} **Proximo reset:** <t:${nextReset}:R> (domingo)`,
     ].join("\n"),

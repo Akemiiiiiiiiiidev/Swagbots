@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { isBlacklisted, removeFromBlacklist } from "../utils/blacklist";
 import { containerReplyOrganized, E, U, V } from "../utils/container";
@@ -23,7 +23,7 @@ export const unban: Command = {
       if (!executor || !isAdministrator(executor)) {
         await interaction.reply(
           containerReplyOrganized(
-            ["# **DESBANIMENTO NEGADO**", [`${E} **<:xxx:1514705761413107732> Usuario na blacklist**`, `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`, `${E} Somente administradores podem desbanir este <:xxx:1514705761413107732> usuario.`].join("\n")],
+            ["# **DESBANIMENTO NEGADO**", [`${E} **Usuario <:xxx:1514705761413107732> na blacklist**`, `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`, `${E} Somente administradores podem desbanir este usuario <:xxx:1514705761413107732>.`].join("\n")],
             { ephemeral: true }
           )
         );
@@ -36,8 +36,8 @@ export const unban: Command = {
       containerReplyOrganized([
         "# **DESBANIMENTO**",
         [
-          `${V} **<:xxx:1514705761413107732> Usuario desbanido**`,
-          `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
+          `${V} **Usuario <:xxx:1514705761413107732> desbanido**`,
+          `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
           `${E} **ID:** ${target.userId}`,
           `${E} **Moderador:** <@${interaction.user.id}>`,
           blacklisted ? `${E} **Blacklist:** removido automaticamente` : `${E} **Blacklist:** nao aplicavel`,
@@ -47,7 +47,7 @@ export const unban: Command = {
     await sendLog(guild, "ban", [
       [
         `${V} **Desbanimento**`,
-        `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
+        `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
         `${E} **ID:** ${target.userId}`,
         `${E} **Moderador:** <@${interaction.user.id}>`,
         blacklisted ? `${E} **Blacklist:** removido automaticamente` : `${E} **Blacklist:** nao aplicavel`,

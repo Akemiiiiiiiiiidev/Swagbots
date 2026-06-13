@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import {
   assignAutoRole,
@@ -19,7 +19,7 @@ export const autorole: Command = {
         .setName("setup")
         .setDescription("Define o cargo automatico")
         .addRoleOption((option) =>
-          option.setName("cargo").setDescription("Cargo para novos <:xxx:1514705761413107732> membros").setRequired(true)
+          option.setName("cargo").setDescription("Cargo para novos membros <:xxx:1514705761413107732>").setRequired(true)
         )
     )
     .addSubcommand((sub) =>
@@ -93,7 +93,7 @@ export const autorole: Command = {
             `${E} **Cargo:** <@&${role.id}>`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Novos <:xxx:1514705761413107732> membros receberao este cargo ao entrar no servidor.`,
+          `${E} Novos membros <:xxx:1514705761413107732> receberao este cargo ao entrar no servidor.`,
         ])
       );
       return;
@@ -108,7 +108,7 @@ export const autorole: Command = {
             `${V} **Configuracao removida**`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Novos <:xxx:1514705761413107732> membros nao receberao mais cargo automatico.`,
+          `${E} Novos membros <:xxx:1514705761413107732> nao receberao mais cargo automatico.`,
         ])
       );
       return;

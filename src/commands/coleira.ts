@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { containerReplyOrganized, E, V } from "../utils/container";
 import { getAllColeiras, getColeira, hasColeira, listColeirasByExecutor, removeColeira, removeColeiraByExecutor, setColeira } from "../utils/coleira";
@@ -17,7 +17,7 @@ export const coleira: Command = {
         .addUserOption((opt) => opt.setName("usuario").setDescription("Usuario para remover a coleira").setRequired(true))
     )
     .addSubcommand((sub) => sub.setName("remover-todas").setDescription("Remove todas as coleiras que voce ativou"))
-    .addSubcommand((sub) => sub.setName("listar").setDescription("Lista todos os <:xxx:1514705761413107732> usuarios com coleira ativa")),
+    .addSubcommand((sub) => sub.setName("listar").setDescription("Lista todos os usuarios <:xxx:1514705761413107732> com coleira ativa")),
 
   async execute(interaction) {
     const guild = interaction.guild;
@@ -40,7 +40,7 @@ export const coleira: Command = {
       }
       const target = await fetchGuildMember(guild, targetUser.id);
       if (!target) {
-        await interaction.reply(containerReplyOrganized([`${E} Este <:xxx:1514705761413107732> usuario nao esta no servidor.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Este usuario <:xxx:1514705761413107732> nao esta no servidor.`], { ephemeral: true }));
         return;
       }
       if (hasColeira(guild.id, target.id)) {
@@ -126,7 +126,7 @@ export const coleira: Command = {
           [
             `${V} **Status:** Todas removidas`,
             `${E} **Total removidas:** ${list.length}`,
-            `${E} **<:xxx:1514705761413107732> Usuarios:** ${list.map((id) => `<@${id}>`).join(", ")}`,
+            `${E} **usuarios <:xxx:1514705761413107732>:** ${list.map((id) => `<@${id}>`).join(", ")}`,
           ].join("\n"),
         ])
       );

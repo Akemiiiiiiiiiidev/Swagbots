@@ -1,4 +1,4 @@
-import { ChannelType, SlashCommandBuilder } from "discord.js";
+﻿import { ChannelType, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { containerReplyOrganized, E } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
@@ -114,7 +114,7 @@ export const welcome: Command = {
             `${E} **Configuracao removida**`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Novos <:xxx:1514705761413107732> membros nao receberao mais mensagem de boas-vindas.`,
+          `${E} Novos membros <:xxx:1514705761413107732> nao receberao mais mensagem de boas-vindas.`,
         ])
       );
       return;

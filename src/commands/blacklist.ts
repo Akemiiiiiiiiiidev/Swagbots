@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { addToBlacklist, getBlacklistUsers, isBlacklisted, removeFromBlacklist } from "../utils/blacklist";
 import { containerReplyOrganized, E, U, V } from "../utils/container";
@@ -21,7 +21,7 @@ export const blacklist: Command = {
         .addUserOption((o) => o.setName("membro").setDescription("Usuario para remover").setRequired(false))
         .addStringOption((o) => o.setName("id").setDescription("ID do usuario").setRequired(false))
     )
-    .addSubcommand((sub) => sub.setName("lista").setDescription("Lista <:xxx:1514705761413107732> usuarios na blacklist")),
+    .addSubcommand((sub) => sub.setName("lista").setDescription("Lista usuarios <:xxx:1514705761413107732> na blacklist")),
 
   async execute(interaction) {
     const adminError = await checkAdministrator(interaction);
@@ -35,7 +35,7 @@ export const blacklist: Command = {
     if (subcommand === "lista") {
       const users = getBlacklistUsers(guild.id);
       if (users.length === 0) {
-        await interaction.reply(containerReplyOrganized(["# **BLACKLIST**", `${E} Nenhum <:xxx:1514705761413107732> usuario na blacklist.`]));
+        await interaction.reply(containerReplyOrganized(["# **BLACKLIST**", `${E} Nenhum usuario <:xxx:1514705761413107732> na blacklist.`]));
         return;
       }
       const list = users
@@ -49,7 +49,7 @@ export const blacklist: Command = {
         )
         .join("\n\n");
       await interaction.reply(
-        containerReplyOrganized(["# **BLACKLIST**", `${E} **Total:** ${users.length} <:xxx:1514705761413107732> usuario(s)`, list])
+        containerReplyOrganized(["# **BLACKLIST**", `${E} **Total:** ${users.length} usuario <:xxx:1514705761413107732>(s)`, list])
       );
       return;
     }
@@ -62,7 +62,7 @@ export const blacklist: Command = {
 
     if (subcommand === "adicionar") {
       if (isBlacklisted(guild.id, target.userId)) {
-        await interaction.reply(containerReplyOrganized([`${E} Este <:xxx:1514705761413107732> usuario ja esta na blacklist.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Este usuario <:xxx:1514705761413107732> ja esta na blacklist.`], { ephemeral: true }));
         return;
       }
       const reason = interaction.options.getString("motivo") ?? "Sem motivo informado";
@@ -72,8 +72,8 @@ export const blacklist: Command = {
         containerReplyOrganized([
           "# **BLACKLIST**",
           [
-            `${V} **<:xxx:1514705761413107732> Usuario adicionado**`,
-            `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
+            `${V} **Usuario <:xxx:1514705761413107732> adicionado**`,
+            `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
             `${E} **ID:** ${target.userId}`,
             `${E} **Motivo:** ${reason}`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
@@ -83,8 +83,8 @@ export const blacklist: Command = {
       );
       await sendLog(guild, "ban", [
         [
-          `${V} **Blacklist - <:xxx:1514705761413107732> usuario adicionado**`,
-          `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
+          `${V} **Blacklist - usuario <:xxx:1514705761413107732> adicionado**`,
+          `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
           `${E} **ID:** ${target.userId}`,
           `${E} **Motivo:** ${reason}`,
           `${E} **Administrador:** <@${interaction.user.id}>`,
@@ -96,15 +96,15 @@ export const blacklist: Command = {
 
     if (subcommand === "remover") {
       if (!removeFromBlacklist(guild.id, target.userId)) {
-        await interaction.reply(containerReplyOrganized([`${E} Este <:xxx:1514705761413107732> usuario nao esta na blacklist.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Este usuario <:xxx:1514705761413107732> nao esta na blacklist.`], { ephemeral: true }));
         return;
       }
       await interaction.reply(
         containerReplyOrganized([
           "# **BLACKLIST**",
           [
-            `${V} **<:xxx:1514705761413107732> Usuario removido**`,
-            `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
+            `${V} **Usuario <:xxx:1514705761413107732> removido**`,
+            `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
             `${E} **ID:** ${target.userId}`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
@@ -113,8 +113,8 @@ export const blacklist: Command = {
       );
       await sendLog(guild, "ban", [
         [
-          `${V} **Blacklist - <:xxx:1514705761413107732> usuario removido**`,
-          `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
+          `${V} **Blacklist - usuario <:xxx:1514705761413107732> removido**`,
+          `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
           `${E} **ID:** ${target.userId}`,
           `${E} **Administrador:** <@${interaction.user.id}>`,
           `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,

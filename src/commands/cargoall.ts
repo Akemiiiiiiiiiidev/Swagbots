@@ -1,4 +1,4 @@
-import {
+﻿import {
   PermissionFlagsBits,
   SlashCommandBuilder,
   GuildMember,
@@ -14,12 +14,12 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export const cargoall: Command = {
   data: new SlashCommandBuilder()
     .setName("cargo-all")
-    .setDescription("Adiciona ou remove um cargo de todos os <:xxx:1514705761413107732> membros do servidor")
+    .setDescription("Adiciona ou remove um cargo de todos os membros <:xxx:1514705761413107732> do servidor")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand((sub) =>
       sub
         .setName("add")
-        .setDescription("Adiciona um cargo a todos os <:xxx:1514705761413107732> membros")
+        .setDescription("Adiciona um cargo a todos os membros <:xxx:1514705761413107732>")
         .addRoleOption((opt) =>
           opt.setName("cargo").setDescription("Cargo a adicionar").setRequired(true)
         )
@@ -27,7 +27,7 @@ export const cargoall: Command = {
     .addSubcommand((sub) =>
       sub
         .setName("remover")
-        .setDescription("Remove um cargo de todos os <:xxx:1514705761413107732> membros")
+        .setDescription("Remove um cargo de todos os membros <:xxx:1514705761413107732>")
         .addRoleOption((opt) =>
           opt.setName("cargo").setDescription("Cargo a remover").setRequired(true)
         )
@@ -85,7 +85,7 @@ export const cargoall: Command = {
     await interaction.editReply(
       containerEditOrganized([
         `# **CARGO ALL**`,
-        `${E} Processando **${total}** <:xxx:1514705761413107732> membros... aguarde.`,
+        `${E} Processando **${total}** membros <:xxx:1514705761413107732>... aguarde.`,
       ])
     );
 
@@ -135,7 +135,7 @@ export const cargoall: Command = {
         [
           `${V} **Cargo ${action}:** <@&${role.id}>`,
           `${E} **Executor:** <@${interaction.user.id}>`,
-          `${E} **Total de <:xxx:1514705761413107732> membros:** ${total}`,
+          `${E} **Total de membros <:xxx:1514705761413107732>:** ${total}`,
           `${V} **Sucesso:** ${success}`,
           `${E} **Ja tinham/sem cargo:** ${skipped}`,
           failed > 0 ? `${E} **Falhas:** ${failed}` : "",
