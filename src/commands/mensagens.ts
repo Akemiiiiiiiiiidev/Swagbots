@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerEditOrganized, E } from "../utils/container";
+import { containerEditOrganized, E, U } from "../utils/container";
 import {
   getNextSundayTimestamp,
   getTopMessageCounts,
@@ -32,7 +32,7 @@ function buildMensagensSections(guildId: string, targetUserId: string) {
   return [
     "# **MENSAGENS**",
     [
-      `${E} **Usuario:** <@${targetUserId}>`,
+      `${U} **<:xxx:1514705761413107732> Usuario:** <@${targetUserId}>`,
       `${E} **Mensagens esta semana:** ${count}`,
       `${E} **Proximo reset:** <t:${nextReset}:R> (domingo)`,
     ].join("\n"),

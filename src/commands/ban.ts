@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerMessage, containerReply, containerReplyOrganized, E, V } from "../utils/container";
+import { containerMessage, containerReply, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import {
   checkModerationHierarchy,
@@ -77,9 +77,9 @@ export const ban: Command = {
               "# **ANTIBAN**",
               [
                 `${E} **Banimento negado**`,
-                `${E} **Usuario:** <@${target.userId}>`,
+                `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
                 antibanRoleId ? `${E} **Cargo protegido:** <@&${antibanRoleId}>` : "",
-                `${E} Este usuario possui o cargo antiban e nao pode ser banido.`,
+                `${E} Este <:xxx:1514705761413107732> usuario possui o cargo antiban e nao pode ser banido.`,
               ].filter(Boolean).join("\n"),
             ],
             { ephemeral: true }
@@ -95,7 +95,7 @@ export const ban: Command = {
       containerReply(
         [
           `${V} **Banimento aplicado**`,
-          `${E} **Usuario:** ${target.tag}`,
+          `${U} **<:xxx:1514705761413107732> Usuario:** ${target.tag}`,
           `${E} **ID:** ${target.userId}`,
           `${E} **Motivo:** ${reason}`,
           `${E} **Moderador:** ${interaction.user.tag}`,
@@ -106,7 +106,7 @@ export const ban: Command = {
     await sendLog(interaction.guild!, "ban", [
       [
         `${V} **Banimento aplicado**`,
-        `${E} **Usuario:** <@${target.userId}>`,
+        `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`,
         `${E} **ID:** ${target.userId}`,
         `${E} **Motivo:** ${reason}`,
         `${E} **Moderador:** <@${interaction.user.id}>`,

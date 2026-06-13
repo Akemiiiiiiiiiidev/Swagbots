@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReply, E, V } from "../utils/container";
+import { containerReply, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkModerationHierarchy, checkModeratorPermissions, ModerationPermissions, resolveModerationTarget } from "../utils/moderation";
 
@@ -22,11 +22,11 @@ export const kick: Command = {
     await target.member!.kick(`${interaction.user.tag}: ${reason}`);
     await interaction.reply(
       containerReply(
-        [`${V} **Expulsão aplicada**`, `${E} **Usuario:** ${target.tag}`, `${E} **ID:** ${target.userId}`, `${E} **Motivo:** ${reason}`, `${E} **Moderador:** ${interaction.user.tag}`].join("\n")
+        [`${V} **Expulsão aplicada**`, `${U} **<:xxx:1514705761413107732> Usuario:** ${target.tag}`, `${E} **ID:** ${target.userId}`, `${E} **Motivo:** ${reason}`, `${E} **Moderador:** ${interaction.user.tag}`].join("\n")
       )
     );
     await sendLog(interaction.guild!, "ban", [
-      [`${V} **Expulsao aplicada**`, `${E} **Usuario:** <@${target.userId}>`, `${E} **ID:** ${target.userId}`, `${E} **Motivo:** ${reason}`, `${E} **Moderador:** <@${interaction.user.id}>`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+      [`${V} **Expulsao aplicada**`, `${U} **<:xxx:1514705761413107732> Usuario:** <@${target.userId}>`, `${E} **ID:** ${target.userId}`, `${E} **Motivo:** ${reason}`, `${E} **Moderador:** <@${interaction.user.id}>`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
     ]);
   },
 };

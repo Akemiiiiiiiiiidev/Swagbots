@@ -40,7 +40,7 @@ export const coleira: Command = {
       }
       const target = await fetchGuildMember(guild, targetUser.id);
       if (!target) {
-        await interaction.reply(containerReplyOrganized([`${E} Este usuario nao esta no servidor.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Este <:xxx:1514705761413107732> usuario nao esta no servidor.`], { ephemeral: true }));
         return;
       }
       if (hasColeira(guild.id, target.id)) {

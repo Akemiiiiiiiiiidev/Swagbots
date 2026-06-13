@@ -1,6 +1,6 @@
 import { ChannelType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkAdministrator, fetchExecutorMember } from "../utils/moderation";
 import { buildTicketPanelContainer, closeTicketChannel, createTicketChannel, getTicketByChannel, getUserTicket } from "../utils/tickets";
@@ -46,12 +46,12 @@ export const ticket: Command = {
       const channel = await createTicketChannel(guild, member, "suporte", motivo);
       await interaction.reply(
         containerReplyOrganized(
-          ["# **TICKET**", [`${V} **Ticket aberto**`, `${E} **Usuario:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Motivo:** ${motivo}`].join("\n")],
+          ["# **TICKET**", [`${V} **Ticket aberto**`, `${U} **<:xxx:1514705761413107732> Usuario:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Motivo:** ${motivo}`].join("\n")],
           { ephemeral: true }
         )
       );
       await sendLog(guild, "ticket", [
-        [`${V} **Ticket aberto**`, `${E} **Usuario:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Categoria:** Suporte`, `${E} **Motivo:** ${motivo}`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+        [`${V} **Ticket aberto**`, `${U} **<:xxx:1514705761413107732> Usuario:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Categoria:** Suporte`, `${E} **Motivo:** ${motivo}`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
       ]);
       return;
     }
@@ -66,7 +66,7 @@ export const ticket: Command = {
       const isStaff = member?.permissions.has(PermissionFlagsBits.ManageChannels) ?? false;
       if (!isOwner && !isStaff) { await interaction.reply(containerReplyOrganized([`${E} Voce nao tem permissao para fechar este ticket.`], { ephemeral: true })); return; }
       await interaction.reply(
-        containerReplyOrganized(["# **TICKET**", [`${V} **Ticket fechado**`, `${E} **Usuario:** <@${ticketData.userId}>`, `${E} **Fechado por:** <@${interaction.user.id}>`].join("\n")])
+        containerReplyOrganized(["# **TICKET**", [`${V} **Ticket fechado**`, `${U} **<:xxx:1514705761413107732> Usuario:** <@${ticketData.userId}>`, `${E} **Fechado por:** <@${interaction.user.id}>`].join("\n")])
       );
       await closeTicketChannel(guild, channel as TextChannel, ticketData, interaction.user.id);
     }
