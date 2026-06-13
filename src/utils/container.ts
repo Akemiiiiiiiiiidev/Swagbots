@@ -78,10 +78,14 @@ export function buildOrganizedContainer(sections: string[]): ContainerBuilder {
   return container;
 }
 
+// allowedMentions globais — mostra o nome clicável mas NÃO notifica ninguém
+const NO_MENTIONS = { parse: [] as [] };
+
 export function containerMessage(sections: string[]): MessageCreateOptions {
   return {
     components: [buildOrganizedContainer(sections)],
     flags: MessageFlags.IsComponentsV2,
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -96,6 +100,7 @@ export function containerReply(
   return {
     components: [buildContainer(text)],
     flags: flags as InteractionReplyOptions["flags"],
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -103,6 +108,7 @@ export function containerEdit(text: string): InteractionEditReplyOptions {
   return {
     components: [buildContainer(text)],
     flags: MessageFlags.IsComponentsV2,
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -112,6 +118,7 @@ export function containerEditOrganized(
   return {
     components: [buildOrganizedContainer(sections)],
     flags: MessageFlags.IsComponentsV2,
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -126,6 +133,7 @@ export function containerReplyOrganized(
   return {
     components: [buildOrganizedContainer(sections)],
     flags: flags as InteractionReplyOptions["flags"],
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -143,6 +151,7 @@ export function containerReplyList(
   return {
     components: [buildListContainer(title, sections)],
     flags: flags as InteractionReplyOptions["flags"],
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -153,6 +162,7 @@ export function containerEditList(
   return {
     components: [buildListContainer(title, sections)],
     flags: MessageFlags.IsComponentsV2,
+    allowedMentions: NO_MENTIONS,
   };
 }
 
@@ -163,5 +173,6 @@ export function containerMessageList(
   return {
     components: [buildListContainer(title, sections)],
     flags: MessageFlags.IsComponentsV2,
+    allowedMentions: NO_MENTIONS,
   };
 }
