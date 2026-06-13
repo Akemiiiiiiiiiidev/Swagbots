@@ -1,6 +1,6 @@
-import { Guild, SlashCommandBuilder } from "discord.js";
+﻿import { Guild, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerEdit, containerEditOrganized, E } from "../utils/container";
+import { containerEdit, containerEditOrganized } from "../utils/container";
 import { formatVoiceDuration, getTopVoiceTimes, getVoiceTime } from "../utils/voiceTime";
 
 const LIVE_UPDATE_MS = 1000;
@@ -15,13 +15,13 @@ function buildTopRanking(guildId: string): string {
   const top = getTopVoiceTimes(guildId, 5);
 
   if (top.length === 0) {
-    return `${E} Nenhum tempo registrado ainda.`;
+    return `Nenhum tempo registrado ainda.`;
   }
 
   return top
     .map(
       (entry, index) =>
-        `${E} **${index + 1}.** <@${entry.userId}> - ${formatVoiceDuration(entry.totalMs)}`
+        `**${index + 1}.** <@${entry.userId}> - ${formatVoiceDuration(entry.totalMs)}`
     )
     .join("\n");
 }
@@ -32,11 +32,11 @@ function buildTempcallSections(guild: Guild, targetUserId: string) {
   return [
     "# **TEMPO**",
     [
-      `${E} **Usuário:** <@${targetUserId}>`,
-      `${E} **Tempo total:** ${formatVoiceDuration(totalMs)}`,
-      `${E} **Call:** ${getCallName(guild, targetUserId)}`,
+      `**Usuário:** <@${targetUserId}>`,
+      `**Tempo total:** ${formatVoiceDuration(totalMs)}`,
+      `**Call:** ${getCallName(guild, targetUserId)}`,
     ].join("\n"),
-    [`${E} **TOP 5**`, buildTopRanking(guild.id)].join("\n"),
+    [`**TOP 5**`, buildTopRanking(guild.id)].join("\n"),
   ];
 }
 
@@ -55,7 +55,7 @@ export const tempcall: Command = {
 
     if (!guild) {
       await interaction.editReply(
-        containerEdit(`${E} Este comando só pode ser usado em um servidor.`)
+        containerEdit(`Este comando só pode ser usado em um servidor.`)
       );
       return;
     }

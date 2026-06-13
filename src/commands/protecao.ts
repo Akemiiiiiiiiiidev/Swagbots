@@ -1,6 +1,6 @@
-import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyOrganized } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
 import { isProtectionEnabled, setProtection } from "../utils/protection";
 
@@ -33,14 +33,14 @@ export const protecao: Command = {
     const guild = interaction.guild;
     if (!guild) {
       await interaction.reply(
-        containerReplyOrganized([`${E} Este comando so pode ser usado em um servidor.`], { ephemeral: true })
+        containerReplyOrganized([`Este comando so pode ser usado em um servidor.`], { ephemeral: true })
       );
       return;
     }
 
     const adminError = await checkAdministrator(interaction);
     if (adminError) {
-      await interaction.reply(containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${adminError}`], { ephemeral: true }));
       return;
     }
 
@@ -58,7 +58,7 @@ export const protecao: Command = {
             `${antiLink    ? V : E} **Anti-link:** ${antiLink    ? "Ativado" : "Desativado"}`,
             `${channelProt ? V : E} **Canais/Calls/Categorias:** ${channelProt ? "Ativado" : "Desativado"}`,
           ].join("\n"),
-          `${E} Use os subcomandos para ativar ou desativar cada sistema.`,
+          `Use os subcomandos para ativar ou desativar cada sistema.`,
         ])
       );
       return;
@@ -72,7 +72,7 @@ export const protecao: Command = {
       if (ativar === current) {
         await interaction.reply(
           containerReplyOrganized(
-            [`${E} O anti-link ja esta **${current ? "ativado" : "desativado"}**.`],
+            [`O anti-link ja esta **${current ? "ativado" : "desativado"}**.`],
             { ephemeral: true }
           )
         );
@@ -86,11 +86,11 @@ export const protecao: Command = {
           "# **PROTECAO — Anti-link**",
           [
             `${ativar ? V : E} **Status:** ${ativar ? "Ativado" : "Desativado"}`,
-            `${E} **Administrador:** <@${interaction.user.id}>`,
+            `**Administrador:** <@${interaction.user.id}>`,
             "",
             ativar
-              ? `${E} Links enviados por nao-admins serao deletados automaticamente.`
-              : `${E} Links poderao ser enviados livremente.`,
+              ? `Links enviados por nao-admins serao deletados automaticamente.`
+              : `Links poderao ser enviados livremente.`,
           ].join("\n"),
         ])
       );
@@ -105,7 +105,7 @@ export const protecao: Command = {
       if (ativar === current) {
         await interaction.reply(
           containerReplyOrganized(
-            [`${E} A protecao de canais ja esta **${current ? "ativada" : "desativada"}**.`],
+            [`A protecao de canais ja esta **${current ? "ativada" : "desativada"}**.`],
             { ephemeral: true }
           )
         );
@@ -119,11 +119,11 @@ export const protecao: Command = {
           "# **PROTECAO — Canais/Calls/Categorias**",
           [
             `${ativar ? V : E} **Status:** ${ativar ? "Ativada" : "Desativada"}`,
-            `${E} **Administrador:** <@${interaction.user.id}>`,
+            `**Administrador:** <@${interaction.user.id}>`,
             "",
             ativar
-              ? `${E} Canais, calls e categorias deletados ou movidos por nao-admins serao revertidos e o executor punido.`
-              : `${E} Protecao desativada. Qualquer membro pode alterar canais conforme suas permissoes.`,
+              ? `Canais, calls e categorias deletados ou movidos por nao-admins serao revertidos e o executor punido.`
+              : `Protecao desativada. Qualquer membro pode alterar canais conforme suas permissoes.`,
           ].join("\n"),
         ])
       );

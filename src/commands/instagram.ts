@@ -1,6 +1,6 @@
-import { ChannelType, SlashCommandBuilder } from "discord.js";
+﻿import { ChannelType, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized, E } from "../utils/container";
+import { containerReplyOrganized } from "../utils/container";
 import { getUserStats, initInstagram, setInstagramChannel } from "../utils/instagram";
 import { checkAdministrator } from "../utils/moderation";
 
@@ -37,7 +37,7 @@ export const instagram: Command = {
     if (!guild) {
       await interaction.reply(
         containerReplyOrganized(
-          [`${E} Este comando so pode ser usado em um servidor.`],
+          [`Este comando so pode ser usado em um servidor.`],
           { ephemeral: true }
         )
       );
@@ -51,7 +51,7 @@ export const instagram: Command = {
 
       if (adminError) {
         await interaction.reply(
-          containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true })
+          containerReplyOrganized([`${adminError}`], { ephemeral: true })
         );
         return;
       }
@@ -61,7 +61,7 @@ export const instagram: Command = {
       if (channel.type !== ChannelType.GuildText) {
         await interaction.reply(
           containerReplyOrganized(
-            [`${E} Selecione um canal de texto valido.`],
+            [`Selecione um canal de texto valido.`],
             { ephemeral: true }
           )
         );
@@ -73,11 +73,11 @@ export const instagram: Command = {
       await interaction.reply(
         containerReplyOrganized([
           [
-            `${E} **Canal configurado**`,
-            `${E} **Canal:** <#${channel.id}>`,
-            `${E} **Administrador:** <@${interaction.user.id}>`,
+            `**Canal configurado**`,
+            `**Canal:** <#${channel.id}>`,
+            `**Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Envie uma foto nesse canal para publicar automaticamente.`,
+          `Envie uma foto nesse canal para publicar automaticamente.`,
         ])
       );
       return;
@@ -90,11 +90,11 @@ export const instagram: Command = {
       await interaction.reply(
         containerReplyOrganized([
           [
-            `${E} **Perfil:** <@${target.id}>`,
-            `${E} **Publicacoes:** ${stats.posts}`,
-            `${E} **Curtidas recebidas:** ${stats.likesReceived}`,
-            `${E} **Curtidas dadas:** ${stats.likesGiven}`,
-            `${E} **Comentários:** ${stats.comments}`,
+            `**Perfil:** <@${target.id}>`,
+            `**Publicacoes:** ${stats.posts}`,
+            `**Curtidas recebidas:** ${stats.likesReceived}`,
+            `**Curtidas dadas:** ${stats.likesGiven}`,
+            `**Comentários:** ${stats.comments}`,
           ].join("\n"),
         ])
       );

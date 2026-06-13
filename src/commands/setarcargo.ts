@@ -1,6 +1,6 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyList, containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyList, containerReplyOrganized } from "../utils/container";
 import { checkAdministrator, fetchGuildMember } from "../utils/moderation";
 import { sendLog } from "../utils/logs";
 import { isSetarCargoProtectionEnabled, setSetarCargoProtection } from "../utils/setarCargo";
@@ -28,7 +28,7 @@ export const setarcargo: Command = {
   async execute(interaction) {
     const guild = interaction.guild;
     if (!guild) {
-      await interaction.reply(containerReplyOrganized([`${E} Este comando so pode ser usado em um servidor.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`Este comando so pode ser usado em um servidor.`], { ephemeral: true }));
       return;
     }
     const sub = interaction.options.getSubcommand();
@@ -36,20 +36,20 @@ export const setarcargo: Command = {
     if (sub === "protecao") {
       const adminError = await checkAdministrator(interaction);
       if (adminError) {
-        await interaction.reply(containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${adminError}`], { ephemeral: true }));
         return;
       }
       const ativar = interaction.options.getBoolean("ativar", true);
       const current = isSetarCargoProtectionEnabled(guild.id);
       if (ativar === current) {
-        await interaction.reply(containerReplyOrganized([`${E} A protecao ja esta **${current ? "ativada" : "desativada"}**.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`A protecao ja esta **${current ? "ativada" : "desativada"}**.`], { ephemeral: true }));
         return;
       }
       setSetarCargoProtection(guild.id, ativar);
       await interaction.reply(
-        containerReplyList(`${V} SETAR CARGO — Proteção ${ativar ? "Ativada" : "Desativada"}`, [
+        containerReplyList(`SETAR CARGO — Proteção ${ativar ? "Ativada" : "Desativada"}`, [
           {
-            label: `${E} Detalhes`,
+            label: `Detalhes`,
             items: [
               `Configurado por: <@${interaction.user.id}>`,
               ativar
@@ -64,57 +64,57 @@ export const setarcargo: Command = {
 
     const botMember = guild.members.me;
     if (!botMember?.permissions.has(PermissionFlagsBits.ManageRoles)) {
-      await interaction.reply(containerReplyOrganized([`${E} Nao tenho permissao para gerenciar cargos.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`Nao tenho permissao para gerenciar cargos.`], { ephemeral: true }));
       return;
     }
     const targetUser = interaction.options.getUser("membro", true);
     const role = interaction.options.getRole("cargo", true);
     const member = await fetchGuildMember(guild, targetUser.id);
     if (!member) {
-      await interaction.reply(containerReplyOrganized([`${E} Este membro nao esta no servidor.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`Este membro nao esta no servidor.`], { ephemeral: true }));
       return;
     }
     if (role.managed) {
-      await interaction.reply(containerReplyOrganized([`${E} Nao e possivel gerenciar cargos de integracao.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`Nao e possivel gerenciar cargos de integracao.`], { ephemeral: true }));
       return;
     }
     if (role.position >= botMember.roles.highest.position) {
-      await interaction.reply(containerReplyOrganized([`${E} O cargo <@&${role.id}> esta acima ou igual ao meu cargo na hierarquia.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`O cargo <@&${role.id}> esta acima ou igual ao meu cargo na hierarquia.`], { ephemeral: true }));
       return;
     }
 
     if (sub === "add") {
       if (member.roles.cache.has(role.id)) {
-        await interaction.reply(containerReplyOrganized([`${E} <@${member.id}> ja possui o cargo <@&${role.id}>.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`<@${member.id}> ja possui o cargo <@&${role.id}>.`], { ephemeral: true }));
         return;
       }
       await member.roles.add(role.id, `Setar cargo por ${interaction.user.tag}`);
       await interaction.reply(
-        containerReplyList(`${V} SETAR CARGO — Cargo adicionado`, [
-          { label: `${E} Membro`, items: [`<@${member.id}>`] },
-          { label: `${E} Detalhes`, items: [`Cargo: <@&${role.id}>`, `Executor: <@${interaction.user.id}>`, `Data: <t:${Math.floor(Date.now() / 1000)}:F>`] },
+        containerReplyList(`SETAR CARGO — Cargo adicionado`, [
+          { label: `Membro`, items: [`<@${member.id}>`] },
+          { label: `Detalhes`, items: [`Cargo: <@&${role.id}>`, `Executor: <@${interaction.user.id}>`, `Data: <t:${Math.floor(Date.now() / 1000)}:F>`] },
         ])
       );
       await sendLog(guild, "cargo", [
-        [`${V} **Cargo adicionado via comando**`, `${E} **Membro:** <@${member.id}>`, `${E} **Cargo:** <@&${role.id}>`, `${E} **Executor:** <@${interaction.user.id}>`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+        [`**Cargo adicionado via comando**`, `**Membro:** <@${member.id}>`, `**Cargo:** <@&${role.id}>`, `**Executor:** <@${interaction.user.id}>`, `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
       ]);
       return;
     }
 
     if (sub === "remover") {
       if (!member.roles.cache.has(role.id)) {
-        await interaction.reply(containerReplyOrganized([`${E} <@${member.id}> nao possui o cargo <@&${role.id}>.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`<@${member.id}> nao possui o cargo <@&${role.id}>.`], { ephemeral: true }));
         return;
       }
       await member.roles.remove(role.id, `Remover cargo por ${interaction.user.tag}`);
       await interaction.reply(
-        containerReplyList(`${V} SETAR CARGO — Cargo removido`, [
-          { label: `${E} Membro`, items: [`<@${member.id}>`] },
-          { label: `${E} Detalhes`, items: [`Cargo: <@&${role.id}>`, `Executor: <@${interaction.user.id}>`, `Data: <t:${Math.floor(Date.now() / 1000)}:F>`] },
+        containerReplyList(`SETAR CARGO — Cargo removido`, [
+          { label: `Membro`, items: [`<@${member.id}>`] },
+          { label: `Detalhes`, items: [`Cargo: <@&${role.id}>`, `Executor: <@${interaction.user.id}>`, `Data: <t:${Math.floor(Date.now() / 1000)}:F>`] },
         ])
       );
       await sendLog(guild, "cargo", [
-        [`${V} **Cargo removido via comando**`, `${E} **Membro:** <@${member.id}>`, `${E} **Cargo:** <@&${role.id}>`, `${E} **Executor:** <@${interaction.user.id}>`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+        [`**Cargo removido via comando**`, `**Membro:** <@${member.id}>`, `**Cargo:** <@&${role.id}>`, `**Executor:** <@${interaction.user.id}>`, `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
       ]);
     }
   },

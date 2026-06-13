@@ -1,6 +1,6 @@
-import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyOrganized } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
 import { isRoleProtectionEnabled, setRoleProtection } from "../utils/roleProtection";
 
@@ -19,12 +19,12 @@ export const cargo: Command = {
   async execute(interaction) {
     const guild = interaction.guild;
     if (!guild) {
-      await interaction.reply(containerReplyOrganized([`${E} Este comando so pode ser usado em um servidor.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`Este comando so pode ser usado em um servidor.`], { ephemeral: true }));
       return;
     }
     const adminError = await checkAdministrator(interaction);
     if (adminError) {
-      await interaction.reply(containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${adminError}`], { ephemeral: true }));
       return;
     }
     const ativar = interaction.options.getBoolean("ativar", true);
@@ -32,7 +32,7 @@ export const cargo: Command = {
     if (ativar === current) {
       await interaction.reply(
         containerReplyOrganized(
-          ["# **PROTECAO DE CARGOS**", `${E} A protecao ja esta **${current ? "ativada" : "desativada"}**.`],
+          ["# **PROTECAO DE CARGOS**", `A protecao ja esta **${current ? "ativada" : "desativada"}**.`],
           { ephemeral: true }
         )
       );
@@ -44,12 +44,12 @@ export const cargo: Command = {
         [
           "# **PROTECAO DE CARGOS**",
           [
-            `${V} **Status:** ${ativar ? "Ativada" : "Desativada"}`,
-            `${E} **Configurado por:** <@${interaction.user.id}>`,
+            `**Status:** ${ativar ? "Ativada" : "Desativada"}`,
+            `**Configurado por:** <@${interaction.user.id}>`,
             "",
             ativar
-              ? `${E} Apenas administradores podem alterar ou deletar cargos.\n${E} Infratores terao todos os seus cargos removidos automaticamente.`
-              : `${E} A protecao foi desativada. Qualquer membro com permissao pode alterar cargos.`,
+              ? `Apenas administradores podem alterar ou deletar cargos.\nInfratores terao todos os seus cargos removidos automaticamente.`
+              : `A protecao foi desativada. Qualquer membro com permissao pode alterar cargos.`,
           ].join("\n"),
         ],
         { ephemeral: true }

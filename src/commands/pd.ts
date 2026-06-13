@@ -1,6 +1,6 @@
-import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized, E } from "../utils/container";
+import { containerReplyOrganized } from "../utils/container";
 import { fetchGuildMember } from "../utils/moderation";
 import { memberHasPdAccess, initPd } from "../utils/pd";
 import { buildPdAdminPanel, buildPdUserPanel } from "../events/pdInteractions";
@@ -27,7 +27,7 @@ export const pd: Command = {
     const guild = interaction.guild;
     if (!guild) {
       await interaction.reply(
-        containerReplyOrganized([`${E} Este comando so pode ser usado em um servidor.`], { ephemeral: true })
+        containerReplyOrganized([`Este comando so pode ser usado em um servidor.`], { ephemeral: true })
       );
       return;
     }
@@ -40,7 +40,7 @@ export const pd: Command = {
     if (sub === "config") {
       if (!isAdmin) {
         await interaction.reply(
-          containerReplyOrganized([`${E} Apenas administradores podem usar este painel.`], { ephemeral: true })
+          containerReplyOrganized([`Apenas administradores podem usar este painel.`], { ephemeral: true })
         );
         return;
       }
@@ -63,7 +63,7 @@ export const pd: Command = {
 
       if (!hasAccess) {
         await interaction.reply(
-          containerReplyOrganized([`${E} Voce nao tem permissao para usar este painel.`], { ephemeral: true })
+          containerReplyOrganized([`Voce nao tem permissao para usar este painel.`], { ephemeral: true })
         );
         return;
       }

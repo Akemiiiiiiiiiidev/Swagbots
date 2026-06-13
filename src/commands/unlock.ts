@@ -1,7 +1,7 @@
-import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+﻿import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { isChannelLocked, resolveTextChannel, unlockChannel } from "../utils/channelLock";
-import { containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyOrganized } from "../utils/container";
 import { checkModeratorPermissions } from "../utils/moderation";
 
 export const unlock: Command = {
@@ -12,17 +12,17 @@ export const unlock: Command = {
 
   async execute(interaction) {
     const permissionError = checkModeratorPermissions(interaction, PermissionFlagsBits.ManageChannels);
-    if (permissionError) { await interaction.reply(containerReplyOrganized([`${E} ${permissionError}`], { ephemeral: true })); return; }
+    if (permissionError) { await interaction.reply(containerReplyOrganized([`${permissionError}`], { ephemeral: true })); return; }
     const guild = interaction.guild!;
     const channel = resolveTextChannel(guild, interaction.options.getChannel("canal")?.id ?? null, interaction.channelId);
-    if (!channel) { await interaction.reply(containerReplyOrganized([`${E} Selecione um canal de texto valido.`], { ephemeral: true })); return; }
-    if (!isChannelLocked(channel, guild)) { await interaction.reply(containerReplyOrganized([`${E} O canal <#${channel.id}> ja esta destravado.`], { ephemeral: true })); return; }
+    if (!channel) { await interaction.reply(containerReplyOrganized([`Selecione um canal de texto valido.`], { ephemeral: true })); return; }
+    if (!isChannelLocked(channel, guild)) { await interaction.reply(containerReplyOrganized([`O canal <#${channel.id}> ja esta destravado.`], { ephemeral: true })); return; }
     const motivo = interaction.options.getString("motivo") ?? "Sem motivo informado";
     await unlockChannel(channel, guild);
     await interaction.reply(
       containerReplyOrganized([
         "# **UNLOCK**",
-        [`${V} **Chat destravado**`, `${E} **Canal:** <#${channel.id}>`, `${E} **Motivo:** ${motivo}`, `${E} **Moderador:** <@${interaction.user.id}>`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+        [`**Chat destravado**`, `**Canal:** <#${channel.id}>`, `**Motivo:** ${motivo}`, `**Moderador:** <@${interaction.user.id}>`, `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
       ])
     );
   },

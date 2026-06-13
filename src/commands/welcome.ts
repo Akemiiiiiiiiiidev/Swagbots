@@ -1,6 +1,6 @@
 ﻿import { ChannelType, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyList, containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyList, containerReplyOrganized } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
 import { clearWelcomeConfig, formatWelcomeMessage, getWelcomeConfig, getWelcomePlaceholderHelp, initWelcome, setWelcomeConfig } from "../utils/welcome";
 
@@ -20,7 +20,7 @@ export const welcome: Command = {
     initWelcome();
     const guild = interaction.guild;
     if (!guild) {
-      await interaction.reply(containerReplyOrganized([`${E} Este comando so pode ser usado em um servidor.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`Este comando so pode ser usado em um servidor.`], { ephemeral: true }));
       return;
     }
     const subcommand = interaction.options.getSubcommand();
@@ -28,16 +28,16 @@ export const welcome: Command = {
     if (subcommand === "ver") {
       const config = getWelcomeConfig(guild.id);
       if (!config) {
-        await interaction.reply(containerReplyOrganized([`${E} Nenhuma mensagem de boas-vindas configurada. Use /welcome setup.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`Nenhuma mensagem de boas-vindas configurada. Use /welcome setup.`], { ephemeral: true }));
         return;
       }
       const preview = formatWelcomeMessage(config.message, guild, interaction.user.id);
       await interaction.reply(
-        containerReplyList(`${V} BOAS-VINDAS — Configuração`, [
-          { label: `${E} Canal`, items: [`<#${config.channelId}>`] },
-          { label: `${E} Mensagem`, items: [config.message] },
-          { label: `${E} Preview`, items: [preview] },
-          { label: `${E} Placeholders`, items: [getWelcomePlaceholderHelp()] },
+        containerReplyList(`BOAS-VINDAS — Configuração`, [
+          { label: `Canal`, items: [`<#${config.channelId}>`] },
+          { label: `Mensagem`, items: [config.message] },
+          { label: `Preview`, items: [preview] },
+          { label: `Placeholders`, items: [getWelcomePlaceholderHelp()] },
         ])
       );
       return;
@@ -45,15 +45,15 @@ export const welcome: Command = {
 
     const adminError = await checkAdministrator(interaction);
     if (adminError) {
-      await interaction.reply(containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${adminError}`], { ephemeral: true }));
       return;
     }
 
     if (subcommand === "remover") {
       clearWelcomeConfig(guild.id);
       await interaction.reply(
-        containerReplyList(`${V} BOAS-VINDAS — Removido`, [
-          { label: `${E} Detalhes`, items: [`Removido por: <@${interaction.user.id}>`, "Novos membros nao receberao mais mensagem de boas-vindas."] },
+        containerReplyList(`BOAS-VINDAS — Removido`, [
+          { label: `Detalhes`, items: [`Removido por: <@${interaction.user.id}>`, "Novos membros nao receberao mais mensagem de boas-vindas."] },
         ])
       );
       return;
@@ -63,21 +63,21 @@ export const welcome: Command = {
       const channel = interaction.options.getChannel("canal", true);
       const message = interaction.options.getString("mensagem", true).trim();
       if (channel.type !== ChannelType.GuildText) {
-        await interaction.reply(containerReplyOrganized([`${E} Selecione um canal de texto valido.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`Selecione um canal de texto valido.`], { ephemeral: true }));
         return;
       }
       if (!message) {
-        await interaction.reply(containerReplyOrganized([`${E} A mensagem de boas-vindas nao pode estar vazia.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`A mensagem de boas-vindas nao pode estar vazia.`], { ephemeral: true }));
         return;
       }
       setWelcomeConfig(guild.id, channel.id, message);
       const preview = formatWelcomeMessage(message, guild, interaction.user.id);
       await interaction.reply(
-        containerReplyList(`${V} BOAS-VINDAS — Configurado`, [
-          { label: `${E} Canal`, items: [`<#${channel.id}>`] },
-          { label: `${E} Mensagem`, items: [message] },
-          { label: `${E} Preview`, items: [preview] },
-          { label: `${E} Detalhes`, items: [`Configurado por: <@${interaction.user.id}>`] },
+        containerReplyList(`BOAS-VINDAS — Configurado`, [
+          { label: `Canal`, items: [`<#${channel.id}>`] },
+          { label: `Mensagem`, items: [message] },
+          { label: `Preview`, items: [preview] },
+          { label: `Detalhes`, items: [`Configurado por: <@${interaction.user.id}>`] },
         ])
       );
     }

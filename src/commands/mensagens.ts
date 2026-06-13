@@ -1,6 +1,6 @@
 ﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerEditList, containerEditOrganized, E, U } from "../utils/container";
+import { containerEditList, containerEditOrganized } from "../utils/container";
 import { getNextSundayTimestamp, getTopMessageCounts, getUserMessageCount } from "../utils/messageCount";
 
 const LIVE_UPDATE_MS = 5000;
@@ -25,7 +25,7 @@ export const mensagens: Command = {
   async execute(interaction) {
     const guild = interaction.guild;
     if (!guild) {
-      await interaction.editReply(containerEditOrganized([`${E} Este comando so pode ser usado em um servidor.`]));
+      await interaction.editReply(containerEditOrganized([`Este comando so pode ser usado em um servidor.`]));
       return;
     }
     const target = interaction.options.getUser("membro") ?? interaction.user;
@@ -35,15 +35,15 @@ export const mensagens: Command = {
       const nextReset = getNextSundayTimestamp();
       await interaction.editReply(
         containerEditList("📊 MENSAGENS", [
-          { label: `${U} Usuario`, items: [`<@${target.id}>`] },
+          { label: `Usuario`, items: [`<@${target.id}>`] },
           {
-            label: `${E} Esta semana`,
+            label: `Esta semana`,
             items: [
               `Mensagens: **${count}**`,
               `Proximo reset: <t:${nextReset}:R> (domingo)`,
             ],
           },
-          { label: `${E} TOP 5`, items: buildTopRanking(guild.id) },
+          { label: `TOP 5`, items: buildTopRanking(guild.id) },
         ])
       );
     };

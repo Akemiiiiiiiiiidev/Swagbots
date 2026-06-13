@@ -1,6 +1,6 @@
-import { SlashCommandBuilder } from "discord.js";
+﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReply, E } from "../utils/container";
+import { containerReply } from "../utils/container";
 
 export const user: Command = {
   data: new SlashCommandBuilder()
@@ -17,11 +17,11 @@ export const user: Command = {
     await interaction.reply(
       containerReply(
         [
-          `${E} **Usuário:** ${target.tag}`,
-          `${E} **ID:** ${target.id}`,
-          `${E} **Conta criada:** <t:${Math.floor(target.createdTimestamp / 1000)}:R>`,
+          `**Usuário:** ${target.tag}`,
+          `**ID:** ${target.id}`,
+          `**Conta criada:** <t:${Math.floor(target.createdTimestamp / 1000)}:R>`,
           member
-            ? `${E} **Entrou no servidor:** <t:${Math.floor(member.joinedTimestamp! / 1000)}:R>`
+            ? `**Entrou no servidor:** <t:${Math.floor(member.joinedTimestamp! / 1000)}:R>`
             : null,
         ]
           .filter(Boolean)
