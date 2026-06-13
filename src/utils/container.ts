@@ -11,6 +11,7 @@ import {
 } from "discord.js";
 
 const BLACK = 0x000000;
+const PINK  = 0xFF0066;
 
 export const E = "<:1supra_white:1514705873627381840>";
 export const V = "<a:Verified:1514716584407470252>";
@@ -38,30 +39,43 @@ export function buildListContainer(
   title: string,
   sections: ListSection[]
 ): ContainerBuilder {
-  const lines: string[] = [`## ${title}`];
+  const container = new ContainerBuilder().setAccentColor(PINK);
 
-  for (const section of sections) {
-    lines.push(`- **${section.label}:**`);
+  // Título
+  container.addTextDisplayComponents(
+    new TextDisplayBuilder().setContent(`## ${title}`)
+  );
+
+  for (let i = 0; i < sections.length; i++) {
+    const section = sections[i];
+
+    // Separador antes de cada seção
+    container.addSeparatorComponents(
+      new SeparatorBuilder().setDivider(true)
+    );
+
+    // Label + items em bloco único
+    const lines: string[] = [`- **${section.label}:**`];
     for (const item of section.items) {
       lines.push(`  - ${item}`);
     }
-  }
 
-  return new ContainerBuilder()
-    .setAccentColor(BLACK)
-    .addTextDisplayComponents(
+    container.addTextDisplayComponents(
       new TextDisplayBuilder().setContent(lines.join("\n"))
     );
+  }
+
+  return container;
 }
 
 function buildContainer(text: string): ContainerBuilder {
   return new ContainerBuilder()
-    .setAccentColor(BLACK)
+    .setAccentColor(PINK)
     .addTextDisplayComponents(new TextDisplayBuilder().setContent(text));
 }
 
 export function buildOrganizedContainer(sections: string[]): ContainerBuilder {
-  const container = new ContainerBuilder().setAccentColor(BLACK);
+  const container = new ContainerBuilder().setAccentColor(PINK);
 
   sections.forEach((section, index) => {
     container.addTextDisplayComponents(
