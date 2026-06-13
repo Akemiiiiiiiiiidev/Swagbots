@@ -207,17 +207,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
       });
     }
 
-    // Auto-delete: apaga a resposta do comando após 4 segundos
-    // Ignora respostas efêmeras e comandos com noAutoDelete: true
+    // Auto-delete: apaga a resposta do comando apos 4 segundos
+    // Ignora respostas efemeras e comandos com noAutoDelete: true
     if (interaction.inGuild() && (interaction.replied || interaction.deferred) && !command.noAutoDelete) {
       try {
         const reply = await interaction.fetchReply();
         const isEphemeral = reply.flags.has(MessageFlags.Ephemeral);
         if (!isEphemeral) {
           setTimeout(() => {
-            reply.delete().catch(() => {
-              // Ignora erros (mensagem já deletada, interação expirada, etc.)
-            });
+            reply.delete().catch(() => null);
           }, 4000);
         }
       } catch {

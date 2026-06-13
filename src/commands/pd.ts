@@ -45,14 +45,15 @@ export const pd: Command = {
         return;
       }
 
-      await interaction.reply({
+      const { resource: adminResource } = await interaction.reply({
         components: [buildPdAdminPanel(guild.id)],
         flags: MessageFlags.IsComponentsV2,
+        withResponse: true,
       });
 
       // Deleta o painel após 5 minutos de inatividade
-      const reply = await interaction.fetchReply();
-      setTimeout(() => reply.delete().catch(() => null), 5 * 60 * 1000);
+      const adminMsg = adminResource?.message;
+      setTimeout(() => adminMsg?.delete().catch(() => null), 5 * 60 * 1000);
       return;
     }
 
@@ -68,14 +69,15 @@ export const pd: Command = {
         return;
       }
 
-      await interaction.reply({
+      const { resource: userResource } = await interaction.reply({
         components: [buildPdUserPanel(guild.id, interaction.user.id)],
         flags: MessageFlags.IsComponentsV2,
+        withResponse: true,
       });
 
       // Deleta o painel após 5 minutos de inatividade
-      const reply = await interaction.fetchReply();
-      setTimeout(() => reply.delete().catch(() => null), 5 * 60 * 1000);
+      const userMsg = userResource?.message;
+      setTimeout(() => userMsg?.delete().catch(() => null), 5 * 60 * 1000);
       return;
     }
   },

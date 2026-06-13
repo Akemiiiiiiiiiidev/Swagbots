@@ -6,7 +6,8 @@ export const ping: Command = {
   data: new SlashCommandBuilder().setName("ping").setDescription("Verifica a latência do bot"),
 
   async execute(interaction) {
-    const sent = await interaction.reply({ ...containerReply(`Calculando ping...`), fetchReply: true });
+    const { resource } = await interaction.reply({ ...containerReply(`Calculando ping...`), withResponse: true });
+    const sent = resource!.message!;
     const latency = sent.createdTimestamp - interaction.createdTimestamp;
     const apiLatency = Math.round(interaction.client.ws.ping);
     await interaction.editReply(
