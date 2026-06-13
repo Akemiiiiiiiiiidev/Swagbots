@@ -74,7 +74,7 @@ export const antiban: Command = {
           [
             `${V} **Cargo configurado**`,
             `${E} **Cargo:** <@&${roleId}>`,
-            `${E} Membros com este cargo nao podem ser banidos pelo bot.`,
+            `${E} <:xxx:1514705761413107732> Membros com este cargo nao podem ser banidos pelo bot.`,
           ].join("\n"),
         ])
       );
@@ -105,7 +105,7 @@ export const antiban: Command = {
             `${E} **Cargo:** <@&${role.id}>`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Membros com este cargo nao poderao ser banidos pelo bot.`,
+          `${E} <:xxx:1514705761413107732> Membros com este cargo nao poderao ser banidos pelo bot.`,
         ])
       );
       return;

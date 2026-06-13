@@ -8,7 +8,7 @@ import { isSetarCargoProtectionEnabled, setSetarCargoProtection } from "../utils
 export const setarcargo: Command = {
   data: new SlashCommandBuilder()
     .setName("setar-cargo")
-    .setDescription("Gerencia cargos de membros via bot")
+    .setDescription("Gerencia cargos de <:xxx:1514705761413107732> membros via bot")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
     .addSubcommand((sub) =>
       sub
@@ -85,7 +85,7 @@ export const setarcargo: Command = {
             "",
             ativar
               ? `${E} Apenas o bot pode adicionar ou remover cargos.\n${E} Qualquer tentativa manual sera revertida automaticamente.`
-              : `${E} Protecao desativada. Membros podem alterar cargos normalmente.`,
+              : `${E} Protecao desativada. <:xxx:1514705761413107732> Membros podem alterar cargos normalmente.`,
           ].join("\n"),
         ])
       );

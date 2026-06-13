@@ -17,7 +17,7 @@ export const coleira: Command = {
         .addUserOption((opt) => opt.setName("usuario").setDescription("Usuario para remover a coleira").setRequired(true))
     )
     .addSubcommand((sub) => sub.setName("remover-todas").setDescription("Remove todas as coleiras que voce ativou"))
-    .addSubcommand((sub) => sub.setName("listar").setDescription("Lista todos os usuarios com coleira ativa")),
+    .addSubcommand((sub) => sub.setName("listar").setDescription("Lista todos os <:xxx:1514705761413107732> usuarios com coleira ativa")),
 
   async execute(interaction) {
     const guild = interaction.guild;
@@ -126,7 +126,7 @@ export const coleira: Command = {
           [
             `${V} **Status:** Todas removidas`,
             `${E} **Total removidas:** ${list.length}`,
-            `${E} **Usuarios:** ${list.map((id) => `<@${id}>`).join(", ")}`,
+            `${E} **<:xxx:1514705761413107732> Usuarios:** ${list.map((id) => `<@${id}>`).join(", ")}`,
           ].join("\n"),
         ])
       );

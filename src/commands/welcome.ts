@@ -114,7 +114,7 @@ export const welcome: Command = {
             `${E} **Configuracao removida**`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Novos membros nao receberao mais mensagem de boas-vindas.`,
+          `${E} Novos <:xxx:1514705761413107732> membros nao receberao mais mensagem de boas-vindas.`,
         ])
       );
       return;

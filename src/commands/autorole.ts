@@ -19,7 +19,7 @@ export const autorole: Command = {
         .setName("setup")
         .setDescription("Define o cargo automatico")
         .addRoleOption((option) =>
-          option.setName("cargo").setDescription("Cargo para novos membros").setRequired(true)
+          option.setName("cargo").setDescription("Cargo para novos <:xxx:1514705761413107732> membros").setRequired(true)
         )
     )
     .addSubcommand((sub) =>
@@ -93,7 +93,7 @@ export const autorole: Command = {
             `${E} **Cargo:** <@&${role.id}>`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Novos membros receberao este cargo ao entrar no servidor.`,
+          `${E} Novos <:xxx:1514705761413107732> membros receberao este cargo ao entrar no servidor.`,
         ])
       );
       return;
@@ -108,7 +108,7 @@ export const autorole: Command = {
             `${V} **Configuracao removida**`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
-          `${E} Novos membros nao receberao mais cargo automatico.`,
+          `${E} Novos <:xxx:1514705761413107732> membros nao receberao mais cargo automatico.`,
         ])
       );
       return;

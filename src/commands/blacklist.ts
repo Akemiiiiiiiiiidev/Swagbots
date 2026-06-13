@@ -1,7 +1,7 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { addToBlacklist, getBlacklistUsers, isBlacklisted, removeFromBlacklist } from "../utils/blacklist";
-import { containerReplyOrganized, E, V } from "../utils/container";
+import { containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkAdministrator, resolveModerationTarget } from "../utils/moderation";
 
@@ -21,7 +21,7 @@ export const blacklist: Command = {
         .addUserOption((o) => o.setName("membro").setDescription("Usuario para remover").setRequired(false))
         .addStringOption((o) => o.setName("id").setDescription("ID do usuario").setRequired(false))
     )
-    .addSubcommand((sub) => sub.setName("lista").setDescription("Lista usuarios na blacklist")),
+    .addSubcommand((sub) => sub.setName("lista").setDescription("Lista <:xxx:1514705761413107732> usuarios na blacklist")),
 
   async execute(interaction) {
     const adminError = await checkAdministrator(interaction);
@@ -73,7 +73,7 @@ export const blacklist: Command = {
           "# **BLACKLIST**",
           [
             `${V} **Usuario adicionado**`,
-            `${E} **Usuario:** <@${target.userId}>`,
+            `${U} **Usuario:** <@${target.userId}>`,
             `${E} **ID:** ${target.userId}`,
             `${E} **Motivo:** ${reason}`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
@@ -84,7 +84,7 @@ export const blacklist: Command = {
       await sendLog(guild, "ban", [
         [
           `${V} **Blacklist - usuario adicionado**`,
-          `${E} **Usuario:** <@${target.userId}>`,
+          `${U} **Usuario:** <@${target.userId}>`,
           `${E} **ID:** ${target.userId}`,
           `${E} **Motivo:** ${reason}`,
           `${E} **Administrador:** <@${interaction.user.id}>`,
@@ -104,7 +104,7 @@ export const blacklist: Command = {
           "# **BLACKLIST**",
           [
             `${V} **Usuario removido**`,
-            `${E} **Usuario:** <@${target.userId}>`,
+            `${U} **Usuario:** <@${target.userId}>`,
             `${E} **ID:** ${target.userId}`,
             `${E} **Administrador:** <@${interaction.user.id}>`,
           ].join("\n"),
@@ -114,7 +114,7 @@ export const blacklist: Command = {
       await sendLog(guild, "ban", [
         [
           `${V} **Blacklist - usuario removido**`,
-          `${E} **Usuario:** <@${target.userId}>`,
+          `${U} **Usuario:** <@${target.userId}>`,
           `${E} **ID:** ${target.userId}`,
           `${E} **Administrador:** <@${interaction.user.id}>`,
           `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
