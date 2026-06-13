@@ -1,6 +1,6 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder, GuildMember } from "discord.js";
 import type { Command } from "../types";
-import { containerEditList, containerEditOrganized, containerReplyOrganized } from "../utils/container";
+import { containerEditList, containerEditOrganized, containerReplyOrganized, E, V } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
 import { sendLog } from "../utils/logs";
 
@@ -25,27 +25,27 @@ export const cargoall: Command = {
   async execute(interaction) {
     const guild = interaction.guild;
     if (!guild) {
-      await interaction.editReply(containerEditOrganized([`Este comando so pode ser usado em um servidor.`]));
+      await interaction.editReply(containerEditOrganized([`${E} Este comando so pode ser usado em um servidor.`]));
       return;
     }
     const adminError = await checkAdministrator(interaction);
     if (adminError) {
-      await interaction.editReply(containerEditOrganized([`${adminError}`]));
+      await interaction.editReply(containerEditOrganized([`${E} ${adminError}`]));
       return;
     }
     const botMember = guild.members.me;
     if (!botMember?.permissions.has(PermissionFlagsBits.ManageRoles)) {
-      await interaction.editReply(containerEditOrganized([`Nao tenho permissao para gerenciar cargos.`]));
+      await interaction.editReply(containerEditOrganized([`${E} Nao tenho permissao para gerenciar cargos.`]));
       return;
     }
     const role = interaction.options.getRole("cargo", true);
     const sub = interaction.options.getSubcommand();
     if (role.managed) {
-      await interaction.editReply(containerEditOrganized([`Nao e possivel gerenciar cargos de integracao.`]));
+      await interaction.editReply(containerEditOrganized([`${E} Nao e possivel gerenciar cargos de integracao.`]));
       return;
     }
     if (role.position >= botMember.roles.highest.position) {
-      await interaction.editReply(containerEditOrganized([`O cargo <@&${role.id}> esta acima ou igual ao meu cargo na hierarquia.`]));
+      await interaction.editReply(containerEditOrganized([`${E} O cargo <@&${role.id}> esta acima ou igual ao meu cargo na hierarquia.`]));
       return;
     }
 
@@ -54,8 +54,8 @@ export const cargoall: Command = {
     const total = allMembers.size;
 
     await interaction.editReply(
-      containerEditList(`CARGO ALL — Processando`, [
-        { label: `Aguarde`, items: [`Processando **${total}** membros...`] },
+      containerEditList(`${E} CARGO ALL — Processando`, [
+        { label: `${E} Aguarde`, items: [`Processando **${total}** membros...`] },
       ])
     );
 
@@ -89,10 +89,10 @@ export const cargoall: Command = {
     const action = sub === "add" ? "adicionado" : "removido";
 
     await interaction.editReply(
-      containerEditList(`CARGO ALL — Concluído`, [
-        { label: `Cargo ${action}`, items: [`<@&${role.id}>`] },
+      containerEditList(`${V} CARGO ALL — Concluído`, [
+        { label: `${E} Cargo ${action}`, items: [`<@&${role.id}>`] },
         {
-          label: `Resultado`,
+          label: `${E} Resultado`,
           items: [
             `Total de membros: ${total}`,
             `Sucesso: ${success}`,
@@ -107,12 +107,12 @@ export const cargoall: Command = {
 
     await sendLog(guild, "cargo", [
       [
-        `**Cargo-all executado**`,
-        `**Acao:** ${sub === "add" ? "Adicionar" : "Remover"} cargo de todos`,
-        `**Cargo:** <@&${role.id}>`,
-        `**Executor:** <@${interaction.user.id}>`,
-        `**Sucesso:** ${success} | **Pulados:** ${skipped} | **Falhas:** ${failed}`,
-        `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
+        `${V} **Cargo-all executado**`,
+        `${E} **Acao:** ${sub === "add" ? "Adicionar" : "Remover"} cargo de todos`,
+        `${E} **Cargo:** <@&${role.id}>`,
+        `${E} **Executor:** <@${interaction.user.id}>`,
+        `${E} **Sucesso:** ${success} | **Pulados:** ${skipped} | **Falhas:** ${failed}`,
+        `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
       ].join("\n"),
     ]);
   },

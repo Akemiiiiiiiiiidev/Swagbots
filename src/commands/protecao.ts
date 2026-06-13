@@ -46,7 +46,7 @@ export const protecao: Command = {
 
     const sub = interaction.options.getSubcommand();
 
-    // ── STATUS ────────────────────────────────────────────────────────────────
+    //  STATUS 
     if (sub === "status") {
       const antiLink       = isProtectionEnabled(guild.id, "anti_link");
       const channelProt    = isProtectionEnabled(guild.id, "channel_protection");
@@ -64,7 +64,7 @@ export const protecao: Command = {
       return;
     }
 
-    // ── ANTI-LINK ─────────────────────────────────────────────────────────────
+    //  ANTI-LINK 
     if (sub === "anti-link") {
       const ativar  = interaction.options.getBoolean("ativar", true);
       const current = isProtectionEnabled(guild.id, "anti_link");
@@ -83,7 +83,7 @@ export const protecao: Command = {
 
       await interaction.reply(
         containerReplyOrganized([
-          "# **PROTECAO — Anti-link**",
+          "# **PROTECAO  Anti-link**",
           [
             `${ativar ? V : E} **Status:** ${ativar ? "Ativado" : "Desativado"}`,
             `**Administrador:** <@${interaction.user.id}>`,
@@ -97,7 +97,7 @@ export const protecao: Command = {
       return;
     }
 
-    // ── CANAIS ────────────────────────────────────────────────────────────────
+    //  CANAIS 
     if (sub === "canais") {
       const ativar  = interaction.options.getBoolean("ativar", true);
       const current = isProtectionEnabled(guild.id, "channel_protection");
@@ -116,7 +116,7 @@ export const protecao: Command = {
 
       await interaction.reply(
         containerReplyOrganized([
-          "# **PROTECAO — Canais/Calls/Categorias**",
+          "# **PROTECAO  Canais/Calls/Categorias**",
           [
             `${ativar ? V : E} **Status:** ${ativar ? "Ativada" : "Desativada"}`,
             `**Administrador:** <@${interaction.user.id}>`,

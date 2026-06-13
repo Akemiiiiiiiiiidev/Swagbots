@@ -1,7 +1,7 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { addToBlacklist, getBlacklistUsers, isBlacklisted, removeFromBlacklist } from "../utils/blacklist";
-import { containerReplyList, containerReplyOrganized } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkAdministrator, resolveModerationTarget } from "../utils/moderation";
 
@@ -26,7 +26,7 @@ export const blacklist: Command = {
   async execute(interaction) {
     const adminError = await checkAdministrator(interaction);
     if (adminError) {
-      await interaction.reply(containerReplyOrganized([`${adminError}`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true }));
       return;
     }
     const guild = interaction.guild!;
@@ -35,13 +35,13 @@ export const blacklist: Command = {
     if (subcommand === "lista") {
       const users = getBlacklistUsers(guild.id);
       if (users.length === 0) {
-        await interaction.reply(containerReplyOrganized(["# **BLACKLIST**", `Nenhum usuario na blacklist.`]));
+        await interaction.reply(containerReplyOrganized([`${E} Nenhum usuario na blacklist.`]));
         return;
       }
       await interaction.reply(
-        containerReplyList("🚫 BLACKLIST", [
+        containerReplyList(`${E} BLACKLIST`, [
           {
-            label: `Total: ${users.length} usuario(s)`,
+            label: `${E} Total: ${users.length} usuario(s)`,
             items: users.map((entry, i) =>
               `**${i + 1}.** <@${entry.userId}> — ${entry.reason} — por <@${entry.addedBy}> — <t:${Math.floor(entry.addedAt / 1000)}:D>`
             ),
@@ -53,23 +53,23 @@ export const blacklist: Command = {
 
     const target = await resolveModerationTarget(interaction, false);
     if ("error" in target) {
-      await interaction.reply(containerReplyOrganized([`${target.error}`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${E} ${target.error}`], { ephemeral: true }));
       return;
     }
 
     if (subcommand === "adicionar") {
       if (isBlacklisted(guild.id, target.userId)) {
-        await interaction.reply(containerReplyOrganized([`Este usuario ja esta na blacklist.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Este usuario ja esta na blacklist.`], { ephemeral: true }));
         return;
       }
       const reason = interaction.options.getString("motivo") ?? "Sem motivo informado";
       addToBlacklist(guild.id, target.userId, reason, interaction.user.id);
       await guild.members.ban(target.userId, { reason: `Blacklist: ${interaction.user.tag}: ${reason}` }).catch(() => null);
       await interaction.reply(
-        containerReplyList(`BLACKLIST — Usuario adicionado`, [
-          { label: `Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
+        containerReplyList(`${V} BLACKLIST — Usuario adicionado`, [
+          { label: `${U} Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
           {
-            label: `Detalhes`,
+            label: `${E} Detalhes`,
             items: [
               `Motivo: ${reason}`,
               `Administrador: <@${interaction.user.id}>`,
@@ -80,12 +80,12 @@ export const blacklist: Command = {
       );
       await sendLog(guild, "ban", [
         [
-          `**Blacklist - usuario adicionado**`,
-          `**Usuario:** <@${target.userId}>`,
-          `**ID:** ${target.userId}`,
-          `**Motivo:** ${reason}`,
-          `**Administrador:** <@${interaction.user.id}>`,
-          `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
+          `${V} **Blacklist - usuario adicionado**`,
+          `${U} **Usuario:** <@${target.userId}>`,
+          `${E} **ID:** ${target.userId}`,
+          `${E} **Motivo:** ${reason}`,
+          `${E} **Administrador:** <@${interaction.user.id}>`,
+          `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
         ].join("\n"),
       ]);
       return;
@@ -93,14 +93,14 @@ export const blacklist: Command = {
 
     if (subcommand === "remover") {
       if (!removeFromBlacklist(guild.id, target.userId)) {
-        await interaction.reply(containerReplyOrganized([`Este usuario nao esta na blacklist.`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Este usuario nao esta na blacklist.`], { ephemeral: true }));
         return;
       }
       await interaction.reply(
-        containerReplyList(`BLACKLIST — Usuario removido`, [
-          { label: `Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
+        containerReplyList(`${V} BLACKLIST — Usuario removido`, [
+          { label: `${U} Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
           {
-            label: `Detalhes`,
+            label: `${E} Detalhes`,
             items: [
               `Administrador: <@${interaction.user.id}>`,
               "O usuario pode ser desbanido normalmente.",
@@ -110,11 +110,11 @@ export const blacklist: Command = {
       );
       await sendLog(guild, "ban", [
         [
-          `**Blacklist - usuario removido**`,
-          `**Usuario:** <@${target.userId}>`,
-          `**ID:** ${target.userId}`,
-          `**Administrador:** <@${interaction.user.id}>`,
-          `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
+          `${V} **Blacklist - usuario removido**`,
+          `${U} **Usuario:** <@${target.userId}>`,
+          `${E} **ID:** ${target.userId}`,
+          `${E} **Administrador:** <@${interaction.user.id}>`,
+          `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
         ].join("\n"),
       ]);
     }

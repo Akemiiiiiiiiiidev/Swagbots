@@ -1,7 +1,7 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { isBlacklisted, removeFromBlacklist } from "../utils/blacklist";
-import { containerReplyList, containerReplyOrganized } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkModeratorPermissions, fetchExecutorMember, isAdministrator, ModerationPermissions, resolveModerationTarget } from "../utils/moderation";
 
@@ -13,18 +13,18 @@ export const unban: Command = {
 
   async execute(interaction) {
     const permissionError = checkModeratorPermissions(interaction, ModerationPermissions.ban);
-    if (permissionError) { await interaction.reply(containerReplyOrganized([`${permissionError}`], { ephemeral: true })); return; }
+    if (permissionError) { await interaction.reply(containerReplyOrganized([`${E} ${permissionError}`], { ephemeral: true })); return; }
     const guild = interaction.guild!;
     const target = await resolveModerationTarget(interaction, false);
-    if ("error" in target) { await interaction.reply(containerReplyOrganized([`${target.error}`], { ephemeral: true })); return; }
+    if ("error" in target) { await interaction.reply(containerReplyOrganized([`${E} ${target.error}`], { ephemeral: true })); return; }
     const blacklisted = isBlacklisted(guild.id, target.userId);
     if (blacklisted) {
       const executor = await fetchExecutorMember(interaction);
       if (!executor || !isAdministrator(executor)) {
         await interaction.reply(
-          containerReplyList("🚫 DESBANIMENTO NEGADO", [
-            { label: `Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
-            { label: `Motivo`, items: ["Usuario na blacklist.", "Somente administradores podem desbanir este usuario."] },
+          containerReplyList(`${E} DESBANIMENTO NEGADO`, [
+            { label: `${U} Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
+            { label: `${E} Motivo`, items: ["Usuario na blacklist.", "Somente administradores podem desbanir este usuario."] },
           ], { ephemeral: true })
         );
         return;
@@ -33,10 +33,10 @@ export const unban: Command = {
     }
     await guild.members.unban(target.userId, `${interaction.user.tag}: desbanimento`);
     await interaction.reply(
-      containerReplyList(`UNBAN — Usuario desbanido`, [
-        { label: `Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
+      containerReplyList(`${V} UNBAN — Usuario desbanido`, [
+        { label: `${U} Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
         {
-          label: `Detalhes`,
+          label: `${E} Detalhes`,
           items: [
             `Moderador: <@${interaction.user.id}>`,
             blacklisted ? "Blacklist: removido automaticamente" : "Blacklist: nao aplicavel",
@@ -46,12 +46,12 @@ export const unban: Command = {
     );
     await sendLog(guild, "ban", [
       [
-        `**Desbanimento**`,
-        `**Usuario:** <@${target.userId}>`,
-        `**ID:** ${target.userId}`,
-        `**Moderador:** <@${interaction.user.id}>`,
-        blacklisted ? `**Blacklist:** removido automaticamente` : `**Blacklist:** nao aplicavel`,
-        `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
+        `${V} **Desbanimento**`,
+        `${U} **Usuario:** <@${target.userId}>`,
+        `${E} **ID:** ${target.userId}`,
+        `${E} **Moderador:** <@${interaction.user.id}>`,
+        blacklisted ? `${E} **Blacklist:** removido automaticamente` : `${E} **Blacklist:** nao aplicavel`,
+        `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
       ].join("\n"),
     ]);
   },

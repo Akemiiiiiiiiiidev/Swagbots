@@ -1,6 +1,6 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyList, containerReplyOrganized } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkModerationHierarchy, checkModeratorPermissions, formatDuration, ModerationPermissions, resolveModerationTarget } from "../utils/moderation";
 
@@ -14,19 +14,19 @@ export const mute: Command = {
 
   async execute(interaction) {
     const permissionError = checkModeratorPermissions(interaction, ModerationPermissions.mute);
-    if (permissionError) { await interaction.reply(containerReplyOrganized([`${permissionError}`], { ephemeral: true })); return; }
+    if (permissionError) { await interaction.reply(containerReplyOrganized([`${E} ${permissionError}`], { ephemeral: true })); return; }
     const target = await resolveModerationTarget(interaction, true);
-    if ("error" in target) { await interaction.reply(containerReplyOrganized([`${target.error}`], { ephemeral: true })); return; }
+    if ("error" in target) { await interaction.reply(containerReplyOrganized([`${E} ${target.error}`], { ephemeral: true })); return; }
     const hierarchyError = checkModerationHierarchy(interaction, target.member!);
-    if (hierarchyError) { await interaction.reply(containerReplyOrganized([`${hierarchyError}`], { ephemeral: true })); return; }
+    if (hierarchyError) { await interaction.reply(containerReplyOrganized([`${E} ${hierarchyError}`], { ephemeral: true })); return; }
     const durationMinutes = interaction.options.getInteger("duracao") ?? 60;
     const reason = interaction.options.getString("motivo") ?? "Sem motivo informado";
     await target.member!.timeout(durationMinutes * 60 * 1000, `${interaction.user.tag}: ${reason}`);
     await interaction.reply(
-      containerReplyList(`MUTE — Silenciamento aplicado`, [
-        { label: `Usuario`, items: [target.tag, `ID: ${target.userId}`] },
+      containerReplyList(`${V} MUTE — Silenciamento aplicado`, [
+        { label: `${U} Usuario`, items: [target.tag, `ID: ${target.userId}`] },
         {
-          label: `Detalhes`,
+          label: `${E} Detalhes`,
           items: [
             `Duração: ${formatDuration(durationMinutes)}`,
             `Motivo: ${reason}`,
@@ -37,13 +37,13 @@ export const mute: Command = {
     );
     await sendLog(interaction.guild!, "mute", [
       [
-        `**Silenciamento aplicado**`,
-        `**Usuario:** <@${target.userId}>`,
-        `**ID:** ${target.userId}`,
-        `**Duracao:** ${formatDuration(durationMinutes)}`,
-        `**Motivo:** ${reason}`,
-        `**Moderador:** <@${interaction.user.id}>`,
-        `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
+        `${V} **Silenciamento aplicado**`,
+        `${U} **Usuario:** <@${target.userId}>`,
+        `${E} **ID:** ${target.userId}`,
+        `${E} **Duracao:** ${formatDuration(durationMinutes)}`,
+        `${E} **Motivo:** ${reason}`,
+        `${E} **Moderador:** <@${interaction.user.id}>`,
+        `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
       ].join("\n"),
     ]);
   },

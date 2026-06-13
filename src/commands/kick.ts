@@ -1,6 +1,6 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyList, containerReplyOrganized } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkModerationHierarchy, checkModeratorPermissions, ModerationPermissions, resolveModerationTarget } from "../utils/moderation";
 
@@ -13,27 +13,27 @@ export const kick: Command = {
 
   async execute(interaction) {
     const permissionError = checkModeratorPermissions(interaction, ModerationPermissions.kick);
-    if (permissionError) { await interaction.reply(containerReplyOrganized([`${permissionError}`], { ephemeral: true })); return; }
+    if (permissionError) { await interaction.reply(containerReplyOrganized([`${E} ${permissionError}`], { ephemeral: true })); return; }
     const target = await resolveModerationTarget(interaction, true);
-    if ("error" in target) { await interaction.reply(containerReplyOrganized([`${target.error}`], { ephemeral: true })); return; }
+    if ("error" in target) { await interaction.reply(containerReplyOrganized([`${E} ${target.error}`], { ephemeral: true })); return; }
     const hierarchyError = checkModerationHierarchy(interaction, target.member!);
-    if (hierarchyError) { await interaction.reply(containerReplyOrganized([`${hierarchyError}`], { ephemeral: true })); return; }
+    if (hierarchyError) { await interaction.reply(containerReplyOrganized([`${E} ${hierarchyError}`], { ephemeral: true })); return; }
     const reason = interaction.options.getString("motivo") ?? "Sem motivo informado";
     await target.member!.kick(`${interaction.user.tag}: ${reason}`);
     await interaction.reply(
-      containerReplyList(`KICK — Expulsão aplicada`, [
-        { label: `Usuario`, items: [target.tag, `ID: ${target.userId}`] },
-        { label: `Detalhes`, items: [`Motivo: ${reason}`, `Moderador: ${interaction.user.tag}`] },
+      containerReplyList(`${V} KICK — Expulsão aplicada`, [
+        { label: `${U} Usuario`, items: [target.tag, `ID: ${target.userId}`] },
+        { label: `${E} Detalhes`, items: [`Motivo: ${reason}`, `Moderador: ${interaction.user.tag}`] },
       ])
     );
     await sendLog(interaction.guild!, "ban", [
       [
-        `**Expulsao aplicada**`,
-        `**Usuario:** <@${target.userId}>`,
-        `**ID:** ${target.userId}`,
-        `**Motivo:** ${reason}`,
-        `**Moderador:** <@${interaction.user.id}>`,
-        `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
+        `${V} **Expulsao aplicada**`,
+        `${U} **Usuario:** <@${target.userId}>`,
+        `${E} **ID:** ${target.userId}`,
+        `${E} **Motivo:** ${reason}`,
+        `${E} **Moderador:** <@${interaction.user.id}>`,
+        `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
       ].join("\n"),
     ]);
   },

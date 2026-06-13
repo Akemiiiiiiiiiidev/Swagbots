@@ -36,7 +36,7 @@ export const pd: Command = {
     const executorMember = await fetchGuildMember(guild, interaction.user.id);
     const isAdmin        = executorMember?.permissions.has(PermissionFlagsBits.Administrator) ?? false;
 
-    // ── /pd config — apenas admins ────────────────────────────────────────────
+    //  /pd config  apenas admins 
     if (sub === "config") {
       if (!isAdmin) {
         await interaction.reply(
@@ -56,7 +56,7 @@ export const pd: Command = {
       return;
     }
 
-    // ── /pd painel — cargos com acesso ou admins ──────────────────────────────
+    //  /pd painel  cargos com acesso ou admins 
     if (sub === "painel") {
       const memberRoleIds = executorMember?.roles.cache.map((r) => r.id) ?? [];
       const hasAccess     = isAdmin || memberHasPdAccess(guild.id, memberRoleIds);

@@ -1,6 +1,6 @@
 ﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyList, containerReplyOrganized } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, V } from "../utils/container";
 
 export const server: Command = {
   data: new SlashCommandBuilder().setName("server").setDescription("Mostra informações sobre o servidor"),
@@ -8,13 +8,13 @@ export const server: Command = {
   async execute(interaction) {
     const guild = interaction.guild;
     if (!guild) {
-      await interaction.reply(containerReplyOrganized([`Este comando só pode ser usado em um servidor.`], { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${E} Este comando só pode ser usado em um servidor.`], { ephemeral: true }));
       return;
     }
     await interaction.reply(
-      containerReplyList(`SERVIDOR — ${guild.name}`, [
+      containerReplyList(`${V} SERVIDOR — ${guild.name}`, [
         {
-          label: `Informações`,
+          label: `${E} Informações`,
           items: [
             `ID: ${guild.id}`,
             `Dono: <@${guild.ownerId}>`,

@@ -1,6 +1,6 @@
 ﻿import { ChannelType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyList, containerReplyOrganized } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkAdministrator, fetchExecutorMember } from "../utils/moderation";
 import { buildTicketPanelContainer, closeTicketChannel, createTicketChannel, getTicketByChannel, getUserTicket } from "../utils/tickets";
@@ -16,18 +16,18 @@ export const ticket: Command = {
 
   async execute(interaction) {
     const guild = interaction.guild;
-    if (!guild) { await interaction.reply(containerReplyOrganized([`Este comando so pode ser usado em um servidor.`], { ephemeral: true })); return; }
+    if (!guild) { await interaction.reply(containerReplyOrganized([`${E} Este comando so pode ser usado em um servidor.`], { ephemeral: true })); return; }
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "painel") {
       const adminError = await checkAdministrator(interaction);
-      if (adminError) { await interaction.reply(containerReplyOrganized([`${adminError}`], { ephemeral: true })); return; }
+      if (adminError) { await interaction.reply(containerReplyOrganized([`${E} ${adminError}`], { ephemeral: true })); return; }
       const channel = interaction.options.getChannel("canal", true);
-      if (channel.type !== ChannelType.GuildText) { await interaction.reply(containerReplyOrganized([`Selecione um canal de texto valido.`], { ephemeral: true })); return; }
+      if (channel.type !== ChannelType.GuildText) { await interaction.reply(containerReplyOrganized([`${E} Selecione um canal de texto valido.`], { ephemeral: true })); return; }
       await (channel as TextChannel).send({ components: [buildTicketPanelContainer()], flags: MessageFlags.IsComponentsV2 });
       await interaction.reply(
-        containerReplyList(`TICKET — Painel enviado`, [
-          { label: `Detalhes`, items: [`Canal: <#${channel.id}>`, `Administrador: <@${interaction.user.id}>`] },
+        containerReplyList(`${V} TICKET — Painel enviado`, [
+          { label: `${E} Detalhes`, items: [`Canal: <#${channel.id}>`, `Administrador: <@${interaction.user.id}>`] },
         ], { ephemeral: true })
       );
       return;
@@ -35,39 +35,39 @@ export const ticket: Command = {
 
     if (subcommand === "abrir") {
       const member = await fetchExecutorMember(interaction);
-      if (!member) { await interaction.reply(containerReplyOrganized([`Nao foi possivel verificar seu perfil.`], { ephemeral: true })); return; }
+      if (!member) { await interaction.reply(containerReplyOrganized([`${E} Nao foi possivel verificar seu perfil.`], { ephemeral: true })); return; }
       const existing = getUserTicket(guild.id, member.id);
       if (existing) {
-        await interaction.reply(containerReplyOrganized([`Voce ja possui um ticket aberto. Canal: <#${existing.channelId}>`], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Voce ja possui um ticket aberto. Canal: <#${existing.channelId}>`], { ephemeral: true }));
         return;
       }
       const motivo = interaction.options.getString("motivo") ?? "Sem motivo informado";
       const channel = await createTicketChannel(guild, member, "suporte", motivo);
       await interaction.reply(
-        containerReplyList(`TICKET — Aberto`, [
-          { label: `Usuario`, items: [`<@${member.id}>`] },
-          { label: `Detalhes`, items: [`Canal: <#${channel.id}>`, `Motivo: ${motivo}`] },
+        containerReplyList(`${V} TICKET — Aberto`, [
+          { label: `${U} Usuario`, items: [`<@${member.id}>`] },
+          { label: `${E} Detalhes`, items: [`Canal: <#${channel.id}>`, `Motivo: ${motivo}`] },
         ], { ephemeral: true })
       );
       await sendLog(guild, "ticket", [
-        [`**Ticket aberto**`, `**Usuario:** <@${member.id}>`, `**Canal:** <#${channel.id}>`, `**Categoria:** Suporte`, `**Motivo:** ${motivo}`, `**Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+        [`${V} **Ticket aberto**`, `${U} **Usuario:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Categoria:** Suporte`, `${E} **Motivo:** ${motivo}`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
       ]);
       return;
     }
 
     if (subcommand === "fechar") {
       const channel = interaction.channel;
-      if (!channel || !channel.isTextBased() || channel.isDMBased()) { await interaction.reply(containerReplyOrganized([`Use este comando dentro de um ticket.`], { ephemeral: true })); return; }
+      if (!channel || !channel.isTextBased() || channel.isDMBased()) { await interaction.reply(containerReplyOrganized([`${E} Use este comando dentro de um ticket.`], { ephemeral: true })); return; }
       const ticketData = getTicketByChannel(channel.id);
-      if (!ticketData) { await interaction.reply(containerReplyOrganized([`Este canal nao e um ticket.`], { ephemeral: true })); return; }
+      if (!ticketData) { await interaction.reply(containerReplyOrganized([`${E} Este canal nao e um ticket.`], { ephemeral: true })); return; }
       const member = await fetchExecutorMember(interaction);
       const isOwner = interaction.user.id === ticketData.userId;
       const isStaff = member?.permissions.has(PermissionFlagsBits.ManageChannels) ?? false;
-      if (!isOwner && !isStaff) { await interaction.reply(containerReplyOrganized([`Voce nao tem permissao para fechar este ticket.`], { ephemeral: true })); return; }
+      if (!isOwner && !isStaff) { await interaction.reply(containerReplyOrganized([`${E} Voce nao tem permissao para fechar este ticket.`], { ephemeral: true })); return; }
       await interaction.reply(
-        containerReplyList(`TICKET — Fechado`, [
-          { label: `Usuario`, items: [`<@${ticketData.userId}>`] },
-          { label: `Detalhes`, items: [`Fechado por: <@${interaction.user.id}>`] },
+        containerReplyList(`${V} TICKET — Fechado`, [
+          { label: `${U} Usuario`, items: [`<@${ticketData.userId}>`] },
+          { label: `${E} Detalhes`, items: [`Fechado por: <@${interaction.user.id}>`] },
         ])
       );
       await closeTicketChannel(guild, channel as TextChannel, ticketData, interaction.user.id);
