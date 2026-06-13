@@ -1,6 +1,6 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized } from "../utils/container";
+import { containerReplyOrganized, E, V } from "../utils/container";
 import { checkAdministrator } from "../utils/moderation";
 import { isProtectionEnabled, setProtection } from "../utils/protection";
 
