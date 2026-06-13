@@ -1,6 +1,6 @@
 ﻿import { ChannelType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js";
 import type { Command } from "../types";
-import { containerReplyOrganized, E, U, V } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkAdministrator, fetchExecutorMember } from "../utils/moderation";
 import { buildTicketPanelContainer, closeTicketChannel, createTicketChannel, getTicketByChannel, getUserTicket } from "../utils/tickets";
@@ -26,10 +26,9 @@ export const ticket: Command = {
       if (channel.type !== ChannelType.GuildText) { await interaction.reply(containerReplyOrganized([`${E} Selecione um canal de texto valido.`], { ephemeral: true })); return; }
       await (channel as TextChannel).send({ components: [buildTicketPanelContainer()], flags: MessageFlags.IsComponentsV2 });
       await interaction.reply(
-        containerReplyOrganized(
-          ["# **TICKET**", [`${V} **Painel enviado**`, `${E} **Canal:** <#${channel.id}>`, `${E} **Administrador:** <@${interaction.user.id}>`].join("\n")],
-          { ephemeral: true }
-        )
+        containerReplyList(`${V} TICKET — Painel enviado`, [
+          { label: `${E} Detalhes`, items: [`Canal: <#${channel.id}>`, `Administrador: <@${interaction.user.id}>`] },
+        ], { ephemeral: true })
       );
       return;
     }
@@ -39,19 +38,19 @@ export const ticket: Command = {
       if (!member) { await interaction.reply(containerReplyOrganized([`${E} Nao foi possivel verificar seu perfil.`], { ephemeral: true })); return; }
       const existing = getUserTicket(guild.id, member.id);
       if (existing) {
-        await interaction.reply(containerReplyOrganized(["# **TICKET**", [`${E} Voce ja possui um ticket aberto.`, `${E} **Canal:** <#${existing.channelId}>`].join("\n")], { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} Voce ja possui um ticket aberto. Canal: <#${existing.channelId}>`], { ephemeral: true }));
         return;
       }
       const motivo = interaction.options.getString("motivo") ?? "Sem motivo informado";
       const channel = await createTicketChannel(guild, member, "suporte", motivo);
       await interaction.reply(
-        containerReplyOrganized(
-          ["# **TICKET**", [`${V} **Ticket aberto**`, `${U} **Usuario <:xxx:1514705761413107732>:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Motivo:** ${motivo}`].join("\n")],
-          { ephemeral: true }
-        )
+        containerReplyList(`${V} TICKET — Aberto`, [
+          { label: `${U} Usuario`, items: [`<@${member.id}>`] },
+          { label: `${E} Detalhes`, items: [`Canal: <#${channel.id}>`, `Motivo: ${motivo}`] },
+        ], { ephemeral: true })
       );
       await sendLog(guild, "ticket", [
-        [`${V} **Ticket aberto**`, `${U} **Usuario <:xxx:1514705761413107732>:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Categoria:** Suporte`, `${E} **Motivo:** ${motivo}`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
+        [`${V} **Ticket aberto**`, `${U} **Usuario:** <@${member.id}>`, `${E} **Canal:** <#${channel.id}>`, `${E} **Categoria:** Suporte`, `${E} **Motivo:** ${motivo}`, `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`].join("\n"),
       ]);
       return;
     }
@@ -66,7 +65,10 @@ export const ticket: Command = {
       const isStaff = member?.permissions.has(PermissionFlagsBits.ManageChannels) ?? false;
       if (!isOwner && !isStaff) { await interaction.reply(containerReplyOrganized([`${E} Voce nao tem permissao para fechar este ticket.`], { ephemeral: true })); return; }
       await interaction.reply(
-        containerReplyOrganized(["# **TICKET**", [`${V} **Ticket fechado**`, `${U} **Usuario <:xxx:1514705761413107732>:** <@${ticketData.userId}>`, `${E} **Fechado por:** <@${interaction.user.id}>`].join("\n")])
+        containerReplyList(`${V} TICKET — Fechado`, [
+          { label: `${U} Usuario`, items: [`<@${ticketData.userId}>`] },
+          { label: `${E} Detalhes`, items: [`Fechado por: <@${interaction.user.id}>`] },
+        ])
       );
       await closeTicketChannel(guild, channel as TextChannel, ticketData, interaction.user.id);
     }

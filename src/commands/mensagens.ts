@@ -1,43 +1,15 @@
 ﻿import { SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerEditOrganized, E, U } from "../utils/container";
-import {
-  getNextSundayTimestamp,
-  getTopMessageCounts,
-  getUserMessageCount,
-} from "../utils/messageCount";
+import { containerEditList, containerEditOrganized, E, U } from "../utils/container";
+import { getNextSundayTimestamp, getTopMessageCounts, getUserMessageCount } from "../utils/messageCount";
 
 const LIVE_UPDATE_MS = 5000;
 const LIVE_UPDATE_DURATION_MS = 120_000;
 
-function buildTopRanking(guildId: string): string {
+function buildTopRanking(guildId: string): string[] {
   const top = getTopMessageCounts(guildId, 5);
-
-  if (top.length === 0) {
-    return `${E} Nenhuma mensagem registrada nesta semana.`;
-  }
-
-  return top
-    .map(
-      (entry, index) =>
-        `${E} **${index + 1}.** <@${entry.userId}> - **${entry.count}** mensagens`
-    )
-    .join("\n");
-}
-
-function buildMensagensSections(guildId: string, targetUserId: string) {
-  const count = getUserMessageCount(guildId, targetUserId);
-  const nextReset = getNextSundayTimestamp();
-
-  return [
-    "# **MENSAGENS**",
-    [
-      `${U} **Usuario <:xxx:1514705761413107732>:** <@${targetUserId}>`,
-      `${E} **Mensagens esta semana:** ${count}`,
-      `${E} **Proximo reset:** <t:${nextReset}:R> (domingo)`,
-    ].join("\n"),
-    [`${E} **TOP 5**`, buildTopRanking(guildId)].join("\n"),
-  ];
+  if (top.length === 0) return ["Nenhuma mensagem registrada nesta semana."];
+  return top.map((entry, index) => `**${index + 1}.** <@${entry.userId}> — **${entry.count}** mensagens`);
 }
 
 export const mensagens: Command = {
@@ -52,30 +24,34 @@ export const mensagens: Command = {
 
   async execute(interaction) {
     const guild = interaction.guild;
-
     if (!guild) {
-      await interaction.editReply(
-        containerEditOrganized([`${E} Este comando so pode ser usado em um servidor.`])
-      );
+      await interaction.editReply(containerEditOrganized([`${E} Este comando so pode ser usado em um servidor.`]));
       return;
     }
-
     const target = interaction.options.getUser("membro") ?? interaction.user;
 
     const updateMessage = async () => {
+      const count = getUserMessageCount(guild.id, target.id);
+      const nextReset = getNextSundayTimestamp();
       await interaction.editReply(
-        containerEditOrganized(buildMensagensSections(guild.id, target.id))
+        containerEditList("📊 MENSAGENS", [
+          { label: `${U} Usuario`, items: [`<@${target.id}>`] },
+          {
+            label: `${E} Esta semana`,
+            items: [
+              `Mensagens: **${count}**`,
+              `Proximo reset: <t:${nextReset}:R> (domingo)`,
+            ],
+          },
+          { label: `${E} TOP 5`, items: buildTopRanking(guild.id) },
+        ])
       );
     };
 
     await updateMessage();
 
     const interval = setInterval(async () => {
-      try {
-        await updateMessage();
-      } catch {
-        clearInterval(interval);
-      }
+      try { await updateMessage(); } catch { clearInterval(interval); }
     }, LIVE_UPDATE_MS);
 
     setTimeout(() => clearInterval(interval), LIVE_UPDATE_DURATION_MS);

@@ -1,7 +1,7 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
 import { isBlacklisted, removeFromBlacklist } from "../utils/blacklist";
-import { containerReplyOrganized, E, U, V } from "../utils/container";
+import { containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import { checkModeratorPermissions, fetchExecutorMember, isAdministrator, ModerationPermissions, resolveModerationTarget } from "../utils/moderation";
 
@@ -22,10 +22,10 @@ export const unban: Command = {
       const executor = await fetchExecutorMember(interaction);
       if (!executor || !isAdministrator(executor)) {
         await interaction.reply(
-          containerReplyOrganized(
-            ["# **DESBANIMENTO NEGADO**", [`${E} **Usuario <:xxx:1514705761413107732> na blacklist**`, `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`, `${E} Somente administradores podem desbanir este usuario <:xxx:1514705761413107732>.`].join("\n")],
-            { ephemeral: true }
-          )
+          containerReplyList("🚫 DESBANIMENTO NEGADO", [
+            { label: `${U} Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
+            { label: `${E} Motivo`, items: ["Usuario na blacklist.", "Somente administradores podem desbanir este usuario."] },
+          ], { ephemeral: true })
         );
         return;
       }
@@ -33,21 +33,21 @@ export const unban: Command = {
     }
     await guild.members.unban(target.userId, `${interaction.user.tag}: desbanimento`);
     await interaction.reply(
-      containerReplyOrganized([
-        "# **DESBANIMENTO**",
-        [
-          `${V} **Usuario <:xxx:1514705761413107732> desbanido**`,
-          `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
-          `${E} **ID:** ${target.userId}`,
-          `${E} **Moderador:** <@${interaction.user.id}>`,
-          blacklisted ? `${E} **Blacklist:** removido automaticamente` : `${E} **Blacklist:** nao aplicavel`,
-        ].join("\n"),
+      containerReplyList(`${V} UNBAN — Usuario desbanido`, [
+        { label: `${U} Usuario`, items: [`<@${target.userId}>`, `ID: ${target.userId}`] },
+        {
+          label: `${E} Detalhes`,
+          items: [
+            `Moderador: <@${interaction.user.id}>`,
+            blacklisted ? "Blacklist: removido automaticamente" : "Blacklist: nao aplicavel",
+          ],
+        },
       ])
     );
     await sendLog(guild, "ban", [
       [
         `${V} **Desbanimento**`,
-        `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
+        `${U} **Usuario:** <@${target.userId}>`,
         `${E} **ID:** ${target.userId}`,
         `${E} **Moderador:** <@${interaction.user.id}>`,
         blacklisted ? `${E} **Blacklist:** removido automaticamente` : `${E} **Blacklist:** nao aplicavel`,

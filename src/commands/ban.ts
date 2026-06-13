@@ -1,6 +1,6 @@
 ﻿import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import type { Command } from "../types";
-import { containerMessage, containerReply, containerReplyOrganized, E, U, V } from "../utils/container";
+import { containerMessageList, containerReplyList, containerReplyOrganized, E, U, V } from "../utils/container";
 import { sendLog } from "../utils/logs";
 import {
   checkModerationHierarchy,
@@ -22,14 +22,9 @@ async function sendBanDm(
   if (!user) return false;
   try {
     await user.send(
-      containerMessage([
-        [`${E} **Banimento**`, `${E} Você foi banido do servidor **${guild.name}**`].join("\n"),
-        [
-          `${E} **Servidor:** ${guild.name}`,
-          `${E} **Motivo:** ${reason}`,
-          `${E} **Moderador:** ${interaction.user.tag}`,
-          `${E} **Data:** <t:${Math.floor(Date.now() / 1000)}:F>`,
-        ].join("\n"),
+      containerMessageList(`${E} Banimento`, [
+        { label: `${E} Servidor`, items: [guild.name] },
+        { label: `${E} Detalhes`, items: [`Motivo: ${reason}`, `Moderador: ${interaction.user.tag}`] },
       ])
     );
     return true;
@@ -49,41 +44,37 @@ export const ban: Command = {
   async execute(interaction) {
     const permissionError = checkModeratorPermissions(interaction, ModerationPermissions.ban);
     if (permissionError) {
-      await interaction.reply(containerReply(`${E} ${permissionError}`, { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${E} ${permissionError}`], { ephemeral: true }));
       return;
     }
     const target = await resolveModerationTarget(interaction, false);
     if ("error" in target) {
-      await interaction.reply(containerReply(`${E} ${target.error}`, { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${E} ${target.error}`], { ephemeral: true }));
       return;
     }
     if (target.userId === interaction.user.id) {
-      await interaction.reply(containerReply(`${E} Você não pode banir a si mesmo.`, { ephemeral: true }));
+      await interaction.reply(containerReplyOrganized([`${E} Você não pode banir a si mesmo.`], { ephemeral: true }));
       return;
     }
     if (target.member) {
       const hierarchyError = checkModerationHierarchy(interaction, target.member);
       if (hierarchyError) {
-        await interaction.reply(containerReply(`${E} ${hierarchyError}`, { ephemeral: true }));
+        await interaction.reply(containerReplyOrganized([`${E} ${hierarchyError}`], { ephemeral: true }));
         return;
       }
-
-      // Verifica proteção antiban
       if (isAntibanProtected(target.member)) {
         const antibanRoleId = getAntibanRoleId(target.member.guild.id);
         await interaction.reply(
-          containerReplyOrganized(
-            [
-              "# **ANTIBAN**",
-              [
-                `${E} **Banimento negado**`,
-                `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
-                antibanRoleId ? `${E} **Cargo protegido:** <@&${antibanRoleId}>` : "",
-                `${E} Este usuario <:xxx:1514705761413107732> possui o cargo antiban e nao pode ser banido.`,
-              ].filter(Boolean).join("\n"),
-            ],
-            { ephemeral: true }
-          )
+          containerReplyList("🛡️ ANTIBAN — Banimento negado", [
+            { label: `${U} Usuario`, items: [`<@${target.userId}>`] },
+            {
+              label: `${E} Detalhes`,
+              items: [
+                ...(antibanRoleId ? [`Cargo protegido: <@&${antibanRoleId}>`] : []),
+                "Este usuario possui o cargo antiban e nao pode ser banido.",
+              ],
+            },
+          ], { ephemeral: true })
         );
         return;
       }
@@ -92,21 +83,22 @@ export const ban: Command = {
     const dmSent = await sendBanDm(interaction, target, reason);
     await interaction.guild!.members.ban(target.userId, { reason: `${interaction.user.tag}: ${reason}` });
     await interaction.reply(
-      containerReply(
-        [
-          `${V} **Banimento aplicado**`,
-          `${U} **Usuario <:xxx:1514705761413107732>:** ${target.tag}`,
-          `${E} **ID:** ${target.userId}`,
-          `${E} **Motivo:** ${reason}`,
-          `${E} **Moderador:** ${interaction.user.tag}`,
-          `${E} **Aviso no privado:** ${dmSent ? "Enviado" : "Nao foi possivel enviar"}`,
-        ].join("\n")
-      )
+      containerReplyList(`${V} BAN — Banimento aplicado`, [
+        { label: `${U} Usuario`, items: [`${target.tag}`, `ID: ${target.userId}`] },
+        {
+          label: `${E} Detalhes`,
+          items: [
+            `Motivo: ${reason}`,
+            `Moderador: ${interaction.user.tag}`,
+            `Aviso no privado: ${dmSent ? "Enviado" : "Nao foi possivel enviar"}`,
+          ],
+        },
+      ])
     );
     await sendLog(interaction.guild!, "ban", [
       [
         `${V} **Banimento aplicado**`,
-        `${U} **Usuario <:xxx:1514705761413107732>:** <@${target.userId}>`,
+        `${U} **Usuario:** <@${target.userId}>`,
         `${E} **ID:** ${target.userId}`,
         `${E} **Motivo:** ${reason}`,
         `${E} **Moderador:** <@${interaction.user.id}>`,
